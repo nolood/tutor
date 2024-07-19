@@ -18,10 +18,12 @@ class Server {
 
     this.log = logger;
 
-    const config = new Config(this.log);
+    const config = new Config(logger);
 
     this.config = config.get();
   }
+
+  init = () => {};
 
   async start() {
     try {

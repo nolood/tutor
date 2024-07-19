@@ -38,7 +38,7 @@ export default function Web() {
     <div>
       <h1>Web</h1>
       <form onSubmit={onSubmit}>
-        <label htmlFor="name">Name </label>
+        <label htmlFor="name">Name lox </label>
         <input
           type="text"
           name="name"

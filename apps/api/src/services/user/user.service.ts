@@ -11,7 +11,7 @@ export class UserService extends Service {
     this.userRepository = userRepository;
   }
 
-  getAll = (id: string) => {
-    return this.userRepository.getAll(id);
+  getAll = async () => {
+    return this.userRepository.getAll();
   };
 }

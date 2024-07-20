@@ -1,4 +1,5 @@
-import { db } from "~/db";
+import { db } from "@repo/db/db";
+
 import type { Logger } from "~/types/types";
 
 export class Repository {

@@ -23,6 +23,9 @@ importers:
       '@repo/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      drizzle-orm:
+        specifier: ^0.32.0
+        version: 0.32.0(postgres@3.4.4)
       fastify:
         specifier: ^4.28.1
         version: 4.28.1

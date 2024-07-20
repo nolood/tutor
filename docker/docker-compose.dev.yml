@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  kiwi-db:
+    container_name: tutor-db
+    restart: always
+    image: postgres:15.4-alpine3.18
+    ports:
+      - "5222:5432"
+    environment:
+      POSTGRES_USER: tutor
+      POSTGRES_PASSWORD: tutorSecret
+      POSTGRES_DB: tutor

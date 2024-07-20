@@ -5,8 +5,11 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "dev": "tsx watch ./src/index.ts",
+    "dev": "cross-env NODE_ENV=dev tsx watch ./src/index.ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\" --max-warnings 0",
+    "db:push": "cross-env NODE_ENV=dev drizzle-kit push",
+    "db:studio": "cross-env NODE_ENV=dev drizzle-kit studio",
+    "db:generate": "cross-env NODE_ENV=dev drizzle-kit generate:pg",
     "start": "node -r esbuild-register ./src/index.ts"
   },
   "jest": {
@@ -14,7 +17,9 @@
   },
   "dependencies": {
     "@repo/logger": "workspace:*",
+    "drizzle-orm": "^0.32.0",
     "fastify": "^4.28.1",
+    "postgres": "^3.4.4",
     "tsx": "^4.16.2",
     "zod": "^3.23.8"
   },
@@ -29,7 +34,10 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.11.24",
     "@types/supertest": "^6.0.2",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
+    "drizzle-kit": "^0.23.0",
     "esbuild": "^0.20.1",
     "esbuild-register": "^3.5.0",
     "eslint": "^8.57.0",

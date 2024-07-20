@@ -1,9 +1,9 @@
 import { Repository } from "../repository.class";
 
 export class UserRepository extends Repository {
-  getAll = (id: string) => {
-    this.log.info("getAll", { id });
+  getAll = async () => {
+    const user = await this.db.query.user.findFirst();
 
-    return this.db.query.user.findFirst();
+    return user;
   };
 }

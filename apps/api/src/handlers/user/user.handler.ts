@@ -14,7 +14,9 @@ export class UserHandlers extends Handler {
   }
 
   getAll = async (req: FastifyRequest, reply: FastifyReply) => {
-    reply.send(this.userService.getAll("kek"));
+    const user = await this.userService.getAll();
+
+    reply.send(user);
   };
 
   getOne = async (req: FastifyRequest, reply: FastifyReply) => {

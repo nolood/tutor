@@ -1,7 +1,5 @@
 "use client";
 
-
-
 export default function Web() {
   return (
     <div className="bg-slate-600">

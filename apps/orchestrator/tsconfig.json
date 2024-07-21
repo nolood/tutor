@@ -6,7 +6,7 @@
     "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["src/*"]
     }
   },
   "exclude": ["node_modules", "drizzle.config.ts"],

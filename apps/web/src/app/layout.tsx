@@ -1,5 +1,5 @@
-import "~/css/globals.css";
-
+import Provider from "./_components/providers/provider";
+import "./styles/globals.css";
 export default function RootLayout({
   children,
 }: {
@@ -7,7 +7,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="light text-foreground bg-background">
+        <Provider>{children}</Provider>
+      </body>
     </html>
   );
 }

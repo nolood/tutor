@@ -1,3 +1,4 @@
+import Provider from "./providers/provider";
 import "./styles/globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 export default function RootLayout({
@@ -8,7 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="light text-foreground bg-background">
-        <NextUIProvider>{children}</NextUIProvider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

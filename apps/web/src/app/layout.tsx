@@ -1,6 +1,5 @@
-import Provider from "./providers/provider";
+import Provider from "./_components/providers/provider";
 import "./styles/globals.css";
-import { NextUIProvider } from "@nextui-org/react";
 export default function RootLayout({
   children,
 }: {

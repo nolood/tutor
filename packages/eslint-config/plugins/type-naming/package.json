@@ -1,0 +1,7 @@
+{
+  "name": "eslint-plugin-type-naming",
+  "version": "0.0.3",
+  "peerDependencies": {
+    "eslint": "^8.0.0"
+  }
+}

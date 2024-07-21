@@ -8,7 +8,8 @@ module.exports = {
     "@typescript-eslint",
     "import",
     "unused-imports",
-    "typescript-sort-keys"
+    "typescript-sort-keys",
+    "type-naming"
   ],
   env: {
     node: true,
@@ -20,6 +21,7 @@ module.exports = {
     sourceType: "module"
   },
   rules: {
+    "type-naming": "error",
     "prettier/prettier": "error",
     "import/order": [
       "error",

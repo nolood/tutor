@@ -9,7 +9,6 @@ module.exports = {
     "import",
     "unused-imports",
     "typescript-sort-keys",
-    "type-naming"
   ],
   env: {
     node: true,
@@ -21,7 +20,6 @@ module.exports = {
     sourceType: "module"
   },
   rules: {
-    "type-naming": "error",
     "prettier/prettier": "error",
     "import/order": [
       "error",

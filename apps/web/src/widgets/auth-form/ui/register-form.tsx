@@ -1,13 +1,14 @@
 import React, { FormEvent } from "react";
-import AuthForm from "./auth-form";
 import { useForm } from "@tanstack/react-form";
 import { Input } from "@nextui-org/input";
 import { zodValidator } from "@tanstack/zod-form-adapter";
 import { formRegisterSchema } from "../model/form-register-schema";
 import { Button } from "@nextui-org/button";
+import { TextFieldForm } from "~/shared/ui/text-field-form";
+import { z } from "zod";
 
 const RegisterForm = () => {
-  const form = useForm({
+  const { handleSubmit, Field } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -22,26 +23,16 @@ const RegisterForm = () => {
     },
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    form.handleSubmit();
+    handleSubmit();
   };
 
   return (
-    <AuthForm handleSubmit={handleSubmit}>
-      <form.Field
-        name="email"
-        children={(field) => (
-          <Input
-            color="primary"
-            size="lg"
-            name={field.name}
-            onChange={(e) => field.handleChange(e.target.value)}
-            errorMessage={field.state.meta.errors}
-          />
-        )}
-      />
-      <form.Field
+    <form onSubmit={onSubmit}>
+      <TextFieldForm<z.infer<typeof formRegisterSchema>> Field={Field} name="email" color="primary"
+        size="lg" />
+      <Field
         name="password"
         children={(field) => (
           <Input
@@ -53,7 +44,7 @@ const RegisterForm = () => {
           />
         )}
       />
-      <form.Field
+      <Field
         name="repeatPassword"
         children={(field) => (
           <Input
@@ -69,7 +60,7 @@ const RegisterForm = () => {
       <Button type="submit" color="primary">
         Submit
       </Button>
-    </AuthForm>
+    </form>
   );
 };
 

@@ -1,9 +1,13 @@
-type Button = {
-  callback: string;
-  text: string; // SHOUD BE UNIQUE ON BOT INSTANCE
+type ButtonType = {
+  callback: string; // SHOUD BE UNIQUE ON BOT INSTANCE
+  text: string; 
 };
 
-type KeyboardRow = Button[];
+interface Kek {
+  lol: string
+}
+
+type KeyboardRow = ButtonType[];
 
 type Keyboard = KeyboardRow[];
 

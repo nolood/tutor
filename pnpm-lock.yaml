@@ -321,6 +321,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.2.1
         version: 5.2.1(eslint-config-prettier@9.1.0)(eslint@8.57.0)(prettier@3.3.3)
+      eslint-plugin-type-naming:
+        specifier: ^0.0.3
+        version: 0.0.3(eslint@8.57.0)
       eslint-plugin-typescript-sort-keys:
         specifier: ^3.2.0
         version: 3.2.0(@typescript-eslint/parser@7.16.1)(eslint@8.57.0)(typescript@5.5.3)
@@ -6907,6 +6910,14 @@ packages:
       eslint: '>6.6.0'
     dependencies:
       dotenv: 16.0.3
+      eslint: 8.57.0
+    dev: true
+
+  /eslint-plugin-type-naming@0.0.3(eslint@8.57.0):
+    resolution: {integrity: sha512-RZc7ANRatMNKS3eEd++TPqqOBKfBepbBpm4+OS0fS3RcQ+baaRJUZvAjTi7J1zqbu2QERoq+2k3crNLreUo93A==}
+    peerDependencies:
+      eslint: ^8.0.0
+    dependencies:
       eslint: 8.57.0
     dev: true
 

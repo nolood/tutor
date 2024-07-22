@@ -3,51 +3,160 @@ import { Telegraf, session } from "telegraf";
 import { StartCommand } from "./commands/start.command";
 import type { IBotContext } from "./context/context";
 import { loggerMiddleware } from "./middlewares/logger.middleware";
+import { EBotButtonType, type BotDataType } from "./types/bot.types";
 
 export class Bot {
   protected bot: Telegraf<IBotContext>;
 
-  data = {
+  data: BotDataType = {
     callbacks: {
       math: {
         message: "В каком Вы классе/курсе?",
         keyboard: [
-          [{ type: "callback", text: "1-4 класс", callback: "class_1" }],
-          [{ type: "callback", text: "5-9 класс", callback: "class_2" }],
-          [{ type: "callback", text: "10-11 класс", callback: "class_3" }],
-          [{ type: "callback", text: "1-2 курс", callback: "course_1" }],
-          [{ type: "callback", text: "3-4 курс", callback: "course_2" }],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "1-4 класс",
+              action: "class_1",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "5-9 класс",
+              action: "class_2",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "10-11 класс",
+              action: "class_3",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "1-2 курс",
+              action: "course_1",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "3-4 курс",
+              action: "course_2",
+            },
+          ],
         ],
       },
 
       russian: {
         message: "В каком Вы классе/курсе?",
         keyboard: [
-          [{ type: "callback", text: "1-4 класс", callback: "class_1" }],
-          [{ type: "callback", text: "5-9 класс", callback: "class_2" }],
-          [{ type: "callback", text: "10-11 класс", callback: "class_3" }],
-          [{ type: "callback", text: "1-2 курс", callback: "course_1" }],
-          [{ type: "callback", text: "3-4 курс", callback: "course_2" }],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "1-4 класс",
+              action: "class_1",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "5-9 класс",
+              action: "class_2",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "10-11 класс",
+              action: "class_3",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "1-2 курс",
+              action: "course_1",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "3-4 курс",
+              action: "course_2",
+            },
+          ],
         ],
       },
 
       english: {
         message: "В каком Вы классе/курсе?",
         keyboard: [
-          [{ type: "callback", text: "1-4 класс", callback: "class_1" }],
-          [{ type: "callback", text: "5-9 класс", callback: "class_2" }],
-          [{ type: "callback", text: "10-11 класс", callback: "class_3" }],
-          [{ type: "callback", text: "1-2 курс", callback: "course_1" }],
-          [{ type: "callback", text: "3-4 курс", callback: "course_2" }],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "1-4 класс",
+              action: "class_1",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "5-9 класс",
+              action: "class_2",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "10-11 класс",
+              action: "class_3",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "1-2 курс",
+              action: "course_1",
+            },
+          ],
+          [
+            {
+              type: EBotButtonType.CALLBACK,
+              text: "3-4 курс",
+              action: "course_2",
+            },
+          ],
         ],
       },
     },
     start: {
       keyboard: [
-        [{ type: "callback", text: "Математика", callback: "math" }],
-        [{ type: "callback", text: "Русский язык", callback: "russian" }],
-        [{ type: "callback", text: "Английский язык", callback: "english" }],
-        [{ type: "link", text: "Мой сайт", link: "https://github.com/" }],
+        [{ type: EBotButtonType.CALLBACK, text: "Математика", action: "math" }],
+        [
+          {
+            type: EBotButtonType.CALLBACK,
+            text: "Русский язык",
+            action: "russian",
+          },
+        ],
+        [
+          {
+            type: EBotButtonType.CALLBACK,
+            text: "Английский язык",
+            action: "english",
+          },
+        ],
+        [
+          {
+            type: EBotButtonType.URL,
+            text: "Мой сайт",
+            action: "https://github.com/",
+          },
+        ],
       ],
       message:
         "Здравствуйте! Меня зовут Мария, заполните начальную информацию о себе, далее я с Вами свяжусь и мы сможем обсудить сотрудничество",

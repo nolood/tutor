@@ -1,8 +1,20 @@
+export enum EBotButtonType {
+  CALLBACK = "callback",
+  URL = "url",
+}
+
 type BotButtonType = {
-  callback?: string;
-  link?: string;
+  action: string;
   text: string;
-  type: "callback" | "link";
+  type: EBotButtonType;
 };
 
-export type BotDataType = {};
+type DataType = {
+  keyboard: BotButtonType[][];
+  message: string;
+};
+
+export type BotDataType = {
+  callbacks: Record<string, DataType>;
+  start: DataType;
+};

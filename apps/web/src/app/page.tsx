@@ -20,7 +20,6 @@ export default function Web() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.handleSubmit();
-    console.log(e);
   };
   return (
     <div className="">

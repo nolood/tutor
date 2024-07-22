@@ -1,21 +1,74 @@
-import { FormEvent } from "react";
+import React, { FormEvent } from "react";
 import AuthForm from "./auth-form";
-import { TextFieldForm } from "~/shared/ui";
-import { formRegisterSchema } from "../model/form-register";
-import { useFormData } from "../hooks/use-form";
+import { useForm } from "@tanstack/react-form";
+import { Input } from "@nextui-org/input";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { formRegisterSchema } from "../model/form-register-schema";
+import { Button } from "@nextui-org/button";
+
 const RegisterForm = () => {
-  const registerForm = useFormData();
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+      repeatPassword: "",
+    },
+    validatorAdapter: zodValidator(),
+    validators: {
+      onChange: formRegisterSchema,
+    },
+    onSubmit: ({ value }) => {
+      console.log(value);
+    },
+  });
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    console.log(e);
-    registerForm.handleSubmit();
+    e.preventDefault();
+    form.handleSubmit();
   };
+
   return (
     <AuthForm handleSubmit={handleSubmit}>
-      <TextFieldForm
-        form={registerForm}
-        nameField={"Email"}
-        validators={formRegisterSchema.email}
+      <form.Field
+        name="email"
+        children={(field) => (
+          <Input
+            color="primary"
+            size="lg"
+            name={field.name}
+            onChange={(e) => field.handleChange(e.target.value)}
+            errorMessage={field.state.meta.errors}
+          />
+        )}
       />
+      <form.Field
+        name="password"
+        children={(field) => (
+          <Input
+            color="primary"
+            size="lg"
+            name={field.name}
+            onChange={(e) => field.handleChange(e.target.value)}
+            errorMessage={field.state.meta.errors}
+          />
+        )}
+      />
+      <form.Field
+        name="repeatPassword"
+        children={(field) => (
+          <Input
+            color="primary"
+            size="lg"
+            name={field.name}
+            onChange={(e) => field.handleChange(e.target.value)}
+            onError={() => console.log(field)}
+            value={field.state.value}
+          />
+        )}
+      />
+      <Button type="submit" color="primary">
+        Submit
+      </Button>
     </AuthForm>
   );
 };

@@ -1,23 +1,30 @@
-import { InputProps } from "@nextui-org/input";
-import TextField from "../text-field/text-field";
-import { FC } from "react";
-type textFieldFormProps<T> = {
-  nameField: string;
+import { Input, InputProps } from "@nextui-org/input";
+import { FormApi } from "@tanstack/react-form";
+import React from "react";
+
+type TextFieldFormProps<T> = {
+  name: string;
   validators: () => void;
-  form: T;
+  form: FormApi<T>;
 } & InputProps;
 
-const TextFieldForm: FC<textFieldFormProps<any>> = ({
+const TextFieldForm = <T extends Record<string, unknown> & {Field: fc}>({
   form,
-  nameField,
+  name,
   validators,
   ...props
-}) => {
+}: TextFieldFormProps<T>) => {
   return (
     <form.Field
-      name={nameField}
-      validators={validators}
-      children={(field) => <TextField {...props} {...field} />}
+      name={name}
+      validate={validators}
+      children={(field) => (
+        <Input
+          {...props}
+          name={field.name}
+          onChange={(e) => form.handleChange(e.target.value)}
+        />
+      )}
     />
   );
 };

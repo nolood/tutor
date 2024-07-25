@@ -1,8 +1,9 @@
-import { Telegraf, session } from "telegraf";
+import { Scenes, Telegraf, session } from "telegraf";
 
 import { StartCommand } from "./commands/start.command";
 import type { IBotContext } from "./context/context";
 import { loggerMiddleware } from "./middlewares/logger.middleware";
+import { Scene } from "./scenes/scene";
 import { EBotButtonType, type BotDataType } from "./types/bot.types";
 
 export class Bot {
@@ -10,6 +11,35 @@ export class Bot {
 
   data: BotDataType = {
     callbacks: {
+      class_1: {
+        message: "end",
+        keyboard: [],
+        end: true,
+      },
+
+      class_2: {
+        message: "end",
+        keyboard: [],
+        end: true,
+      },
+
+      class_3: {
+        message: "end",
+        keyboard: [],
+        end: true,
+      },
+
+      course_1: {
+        message: "end",
+        keyboard: [],
+        end: true,
+      },
+
+      course_2: {
+        message: "end",
+        keyboard: [],
+        end: true,
+      },
       math: {
         message: "В каком Вы классе/курсе?",
         keyboard: [
@@ -167,6 +197,12 @@ export class Bot {
     this.bot = new Telegraf<IBotContext>(token);
     this.bot.use(session());
     this.bot.use(loggerMiddleware);
+
+    const stage = new Scenes.Stage<IBotContext>([
+      new Scene("test-scene", this.data.callbacks),
+    ]);
+
+    this.bot.use(stage.middleware());
   }
 
   public init() {

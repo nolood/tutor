@@ -10,6 +10,7 @@ type BotButtonType = {
 };
 
 type DataType = {
+  end?: boolean;
   keyboard: BotButtonType[][];
   message: string;
 };

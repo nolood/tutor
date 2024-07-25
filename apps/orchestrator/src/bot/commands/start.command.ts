@@ -28,6 +28,8 @@ export class StartCommand extends Command {
             ),
           ),
         );
+
+        ctx.scene.enter("test-scene");
       } catch (error: unknown) {
         ctx.log.error("StartCommand", error);
       }

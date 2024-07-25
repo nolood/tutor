@@ -1,4 +1,4 @@
-import { Bot } from "../bot/bot";
+import { Bot } from "~/bot/bot";
 
 const bots = [];
 

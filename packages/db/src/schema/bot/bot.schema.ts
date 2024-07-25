@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid } from "drizzle-orm/pg-core";
+
 import { clusterTable } from "../cluster/cluster.schema";
 import { userTable } from "../user/user.schema";
 
@@ -7,7 +8,7 @@ export const botTable = pgTable("bots", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: uuid("user_id").references(() => userTable.id),
   clusterId: uuid("cluster_id").references(() => clusterTable.id),
-})
+});
 
 export const botTableRelations = relations(botTable, ({ one }) => ({
   cluster: one(clusterTable, {
@@ -20,4 +21,4 @@ export const botTableRelations = relations(botTable, ({ one }) => ({
     references: [userTable.id],
     relationName: "user",
   }),
-}))
+}));

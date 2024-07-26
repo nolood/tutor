@@ -16,8 +16,8 @@
     "preset": "@repo/jest-presets/node"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
     "@repo/logger": "workspace:*",
+    "postgres": "^3.4.4",
     "drizzle-orm": "^0.32.0",
     "fastify": "^4.28.1",
     "tsx": "^4.16.2",

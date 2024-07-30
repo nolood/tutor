@@ -8,7 +8,7 @@ module.exports = {
     "@typescript-eslint",
     "import",
     "unused-imports",
-    "typescript-sort-keys"
+    "typescript-sort-keys",
   ],
   env: {
     node: true,

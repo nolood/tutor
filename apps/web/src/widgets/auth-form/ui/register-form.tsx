@@ -1,6 +1,5 @@
 import React, { FormEvent } from "react";
 import { useForm } from "@tanstack/react-form";
-import { Input } from "@nextui-org/input";
 import { zodValidator } from "@tanstack/zod-form-adapter";
 import { formRegisterSchema } from "../model/form-register-schema";
 import { Button } from "@nextui-org/button";
@@ -29,35 +28,42 @@ const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <TextFieldForm<z.infer<typeof formRegisterSchema>> Field={Field} name="email" color="primary"
-        size="lg" />
-      <Field
+    <form className={"w-full flex flex-col  gap-3"} onSubmit={onSubmit}>
+      <h2 className="text-center text-">Регистрация</h2>
+      <TextFieldForm<z.infer<typeof formRegisterSchema>>
+        Field={Field}
+        className={"w-full"}
+        name="email"
+        variant={"bordered"}
+        color="secondary"
+        label="Почта"
+        placeholder="@gmail.com"
+        size="lg"
+      />
+      <TextFieldForm<z.infer<typeof formRegisterSchema>>
+        Field={Field}
+        className={"w-full"}
         name="password"
-        children={(field) => (
-          <Input
-            color="primary"
-            size="lg"
-            name={field.name}
-            onChange={(e) => field.handleChange(e.target.value)}
-            errorMessage={field.state.meta.errors}
-          />
-        )}
+        type={"password"}
+        variant={"bordered"}
+        color="secondary"
+        label={"Пароль"}
+        placeholder="*****"
+        size="lg"
       />
-      <Field
+      <TextFieldForm<z.infer<typeof formRegisterSchema>>
+        Field={Field}
+        type={"password"}
+        className={"w-full"}
         name="repeatPassword"
-        children={(field) => (
-          <Input
-            color="primary"
-            size="lg"
-            name={field.name}
-            onChange={(e) => field.handleChange(e.target.value)}
-            onError={() => console.log(field)}
-            value={field.state.value}
-          />
-        )}
+        variant={"bordered"}
+        label={"Повторите пароль"}
+        placeholder={"*****"}
+        color="secondary"
+        size="lg"
       />
-      <Button type="submit" color="primary">
+
+      <Button className={"w-full mt-2"} type="submit" color="primary">
         Submit
       </Button>
     </form>

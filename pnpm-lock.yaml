@@ -17,9 +17,6 @@ importers:
 
   apps/api:
     dependencies:
-      '@repo/db':
-        specifier: workspace:*
-        version: link:../../packages/db
       '@repo/logger':
         specifier: workspace:*
         version: link:../../packages/logger
@@ -29,6 +26,9 @@ importers:
       fastify:
         specifier: ^4.28.1
         version: 4.28.1
+      postgres:
+        specifier: ^3.4.4
+        version: 3.4.4
       tsx:
         specifier: ^4.16.2
         version: 4.16.2
@@ -99,9 +99,6 @@ importers:
 
   apps/orchestrator:
     dependencies:
-      '@repo/db':
-        specifier: workspace:*
-        version: link:../../packages/db
       '@repo/logger':
         specifier: workspace:*
         version: link:../../packages/logger
@@ -247,49 +244,6 @@ importers:
         version: 3.4.6
       typescript:
         specifier: ^5.3.3
-        version: 5.5.3
-
-  packages/db:
-    dependencies:
-      dotenv-cli:
-        specifier: ^7.4.2
-        version: 7.4.2
-      drizzle-orm:
-        specifier: ^0.32.0
-        version: 0.32.0(postgres@3.4.4)
-      postgres:
-        specifier: ^3.4.4
-        version: 3.4.4
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@repo/jest-presets':
-        specifier: workspace:*
-        version: link:../jest-presets
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@types/jest':
-        specifier: ^29.5.12
-        version: 29.5.12
-      '@types/node':
-        specifier: ^20.11.24
-        version: 20.14.11
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-      drizzle-kit:
-        specifier: ^0.23.0
-        version: 0.23.0
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
-      typescript:
-        specifier: latest
         version: 5.5.3
 
   packages/eslint-config:
@@ -6110,10 +6064,12 @@ packages:
       dotenv: 16.4.5
       dotenv-expand: 10.0.0
       minimist: 1.2.8
+    dev: true
 
   /dotenv-expand@10.0.0:
     resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
     engines: {node: '>=12'}
+    dev: true
 
   /dotenv@16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
@@ -6123,6 +6079,7 @@ packages:
   /dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
     engines: {node: '>=12'}
+    dev: true
 
   /drizzle-kit@0.23.0:
     resolution: {integrity: sha512-w9jE97z193dd4jzAyj4Uv2SOh8Ydue70Ki6W0awy4bGM1aPXan6zD6Yv+nNTA6oGgNTDl2MJFxutjHG4fden5g==}

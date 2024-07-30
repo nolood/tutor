@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "dev": "cross-env NODE_ENV=dev tsx watch ./src/index.ts",
+    "dev": "cross-env NODE_ENV=dev dotenv tsx watch ./src/index.ts",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\" --max-warnings 0",
     "start": "node -r esbuild-register ./src/index.ts"
   },
@@ -13,7 +13,6 @@
     "preset": "@repo/jest-presets/node"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
     "@repo/logger": "workspace:*",
     "drizzle-orm": "^0.32.0",
     "telegraf": "^4.16.3",

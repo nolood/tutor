@@ -1,12 +1,13 @@
 import { z } from "zod";
 
 export const EnvSchema = z.object({
-  DATABASE_URL: z.string(),
+  TG_TOKEN1: z.string(),
+  TG_TOKEN2: z.string(),
 });
 
-
 const envObj = {
-  DATABASE_URL: process.env.DATABASE_URL,
+  TG_TOKEN1: process.env.TG_TOKEN1,
+  TG_TOKEN2: process.env.TG_TOKEN2,
 };
 
 let _env;

@@ -5,6 +5,7 @@ import { formRegisterSchema } from "../model/form-register-schema";
 import { Button } from "@nextui-org/button";
 import { TextFieldForm } from "~/shared/ui/text-field-form";
 import { z } from "zod";
+import LinkVariantsForm from "./link-variants-form";
 
 const RegisterForm = () => {
   const { handleSubmit, Field } = useForm({
@@ -32,7 +33,17 @@ const RegisterForm = () => {
       className={"w-1/2 items-center flex flex-col gap-3"}
       onSubmit={onSubmit}
     >
-      <h2 className="text-center text-">Регистрация</h2>
+      <h2 className="text-start text-2xl">Регистрация</h2>
+      <TextFieldForm<z.infer<typeof formRegisterSchema>>
+        Field={Field}
+        className={"w-full"}
+        isRequired
+        name="email"
+        color="default"
+        label="Ник-нейм"
+        placeholder="f1k..."
+        size="lg"
+      />
       <TextFieldForm<z.infer<typeof formRegisterSchema>>
         Field={Field}
         className={"w-full"}
@@ -65,14 +76,20 @@ const RegisterForm = () => {
         color="default"
         size="lg"
       />
-
       <Button
-        className={"w-full mt-2 text-[18px]"}
+        className={"w-1/2 mt-2 py-2 text-[18px]"}
         type="submit"
-        color="secondary"
+        color="primary"
+        variant="shadow"
+        size={"lg"}
       >
         Отправить
       </Button>
+      <LinkVariantsForm
+        title={"Есть аккаунт?"}
+        link={"/login"}
+        text={"Войдите"}
+      />
     </form>
   );
 };

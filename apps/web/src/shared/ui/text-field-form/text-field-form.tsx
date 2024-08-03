@@ -25,6 +25,7 @@ const TextFieldForm = <T extends Record<string, unknown>>({
         <Input
           {...props}
           name={field.name}
+          isInvalid={field.}
           onChange={(e) =>
             field.handleChange(e.target.value as Updater<T, any>)
           }

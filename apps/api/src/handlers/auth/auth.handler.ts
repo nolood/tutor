@@ -18,10 +18,10 @@ export class AuthHandlers extends Handler {
     reply: FastifyReply
   ) => {
     try {
-      if (!req.body.email || !req.body.password || !req.body.password) {
+      if (!req.body.email || !req.body.password || !req.body.name) {
         reply
           .status(400)
-          .send({ message: "Поля email, пароль и пароль обязательны" });
+          .send({ message: "Поля email, пароль и name обязательны" });
       }
       const user = await this.authService.register({
         ...req.body,
@@ -38,6 +38,9 @@ export class AuthHandlers extends Handler {
     reply: FastifyReply
   ) => {
     try {
+      if (!req.body.email || !req.body.password) {
+        reply.status(400).send({ message: "Поля email и пароль обязательны" });
+      }
       const user = await this.authService.login({ ...req.body });
       reply.send(user);
     } catch (error) {

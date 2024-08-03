@@ -48,15 +48,15 @@ export class AuthService extends Service {
 
       const user = await this.userRepository.findByEmail(email);
 
-      if (!user) {
+      if (!user || !user.password) {
         throw new Error("Неверный email или пароль");
       }
 
-      // const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await bcrypt.compare(password, user.password);
 
-      // if (!isPasswordValid) {
-      //   throw new Error("Неверный email или пароль");
-      // }
+      if (!isPasswordValid) {
+        throw new Error("Неверный email или пароль");
+      }
 
       const jwtToken = jwt.sign(
         { id: user.id, email: user.email, name: user.name },

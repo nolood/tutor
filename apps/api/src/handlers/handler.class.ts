@@ -1,6 +1,7 @@
+import type { FastifyRequest, FastifyReply } from "fastify";
 import type { EModule, Logger } from "../types/types";
 
-export class Handler {
+export abstract class Handler {
   public name: EModule;
 
   protected log: Logger;
@@ -10,5 +11,5 @@ export class Handler {
     this.log = log;
   }
 
-  register = () => {};
+  abstract register(req: FastifyRequest, reply: FastifyReply): Promise<void>;
 }

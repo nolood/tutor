@@ -11,6 +11,9 @@ import { UserRoutes } from "./routes/user/user.route";
 import getServices from "./services";
 import { UserService } from "./services/user/user.service";
 import { EModule, type Logger } from "./types/types";
+import { AuthService } from "./services/auth/auth.service";
+import { AuthHandlers } from "./handlers/auth/auth.handler";
+import { AuthRoutes } from "./routes/auth/auth.route";
 
 class Server {
   api: FastifyInstance;
@@ -26,23 +29,30 @@ class Server {
 
   init = async () => {
     const repositories = getRepositories(
-      new UserRepository(this.log, EModule.USER),
+      new UserRepository(this.log, EModule.USER)
     );
 
     const services = getServices(
       new UserService(
         this.log,
         repositories.user as UserRepository,
-        EModule.USER,
+        EModule.USER
       ),
+      new AuthService(
+        this.log,
+        repositories.user as UserRepository,
+        EModule.AUTH
+      )
     );
 
     const handlers = getHandlers(
       new UserHandlers(this.log, services.user as UserService, EModule.USER),
+      new AuthHandlers(this.log, services.auth as AuthService, EModule.AUTH)
     );
 
     const routes = [
       new UserRoutes(handlers.user as UserHandlers, "/users", EModule.USER),
+      new AuthRoutes(handlers.auth as AuthHandlers, "/auth", EModule.AUTH),
     ];
 
     for (const route of routes) {

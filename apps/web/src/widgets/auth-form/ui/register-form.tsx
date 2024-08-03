@@ -1,13 +1,13 @@
 import React, { FormEvent } from "react";
-import AuthForm from "./auth-form";
 import { useForm } from "@tanstack/react-form";
-import { Input } from "@nextui-org/input";
 import { zodValidator } from "@tanstack/zod-form-adapter";
 import { formRegisterSchema } from "../model/form-register-schema";
 import { Button } from "@nextui-org/button";
+import { TextFieldForm } from "~/shared/ui/text-field-form";
+import { z } from "zod";
 
 const RegisterForm = () => {
-  const form = useForm({
+  const { handleSubmit, Field } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -22,54 +22,58 @@ const RegisterForm = () => {
     },
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    form.handleSubmit();
+    handleSubmit();
   };
 
   return (
-    <AuthForm handleSubmit={handleSubmit}>
-      <form.Field
+    <form
+      className={"w-1/2 items-center flex flex-col gap-3"}
+      onSubmit={onSubmit}
+    >
+      <h2 className="text-center text-">Регистрация</h2>
+      <TextFieldForm<z.infer<typeof formRegisterSchema>>
+        Field={Field}
+        className={"w-full"}
+        isRequired
         name="email"
-        children={(field) => (
-          <Input
-            color="primary"
-            size="lg"
-            name={field.name}
-            onChange={(e) => field.handleChange(e.target.value)}
-            errorMessage={field.state.meta.errors}
-          />
-        )}
+        color="default"
+        label="Почта"
+        placeholder="@gmail.com"
+        size="lg"
       />
-      <form.Field
+      <TextFieldForm<z.infer<typeof formRegisterSchema>>
+        Field={Field}
+        className={"w-full"}
         name="password"
-        children={(field) => (
-          <Input
-            color="primary"
-            size="lg"
-            name={field.name}
-            onChange={(e) => field.handleChange(e.target.value)}
-            errorMessage={field.state.meta.errors}
-          />
-        )}
+        isRequired
+        type={"password"}
+        color="default"
+        label={"Пароль"}
+        placeholder="*****"
+        size="lg"
       />
-      <form.Field
+      <TextFieldForm<z.infer<typeof formRegisterSchema>>
+        Field={Field}
+        type={"password"}
+        className={"w-full"}
         name="repeatPassword"
-        children={(field) => (
-          <Input
-            color="primary"
-            size="lg"
-            name={field.name}
-            onChange={(e) => field.handleChange(e.target.value)}
-            onError={() => console.log(field)}
-            value={field.state.value}
-          />
-        )}
+        isRequired
+        label={"Повторите пароль"}
+        placeholder={"*****"}
+        color="default"
+        size="lg"
       />
-      <Button type="submit" color="primary">
-        Submit
+
+      <Button
+        className={"w-full mt-2 text-[18px]"}
+        type="submit"
+        color="secondary"
+      >
+        Отправить
       </Button>
-    </AuthForm>
+    </form>
   );
 };
 

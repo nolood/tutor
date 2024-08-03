@@ -3,11 +3,14 @@ import type { FastifyInstance } from "fastify";
 import { fastify } from "fastify";
 
 import { env } from "./env";
+import getHandlers from "./handlers";
 import { UserHandlers } from "./handlers/user/user.handler";
+import getRepositories from "./repositories";
 import { UserRepository } from "./repositories/user/user.repository";
 import { UserRoutes } from "./routes/user/user.route";
+import getServices from "./services";
 import { UserService } from "./services/user/user.service";
-import type { Logger } from "./types/types";
+import { EModule, type Logger } from "./types/types";
 
 class Server {
   api: FastifyInstance;
@@ -22,24 +25,27 @@ class Server {
   }
 
   init = async () => {
-    // TODO: Возможно при масштабировании придётся вынести в отдельный файл/модуль
-    const repositories = {
-      user: new UserRepository(this.log),
-    };
+    const repositories = getRepositories(
+      new UserRepository(this.log, EModule.USER),
+    );
 
-    const services = {
-      user: new UserService(this.log, repositories.user),
-    };
+    const services = getServices(
+      new UserService(
+        this.log,
+        repositories.user as UserRepository,
+        EModule.USER,
+      ),
+    );
 
-    const handlers = {
-      user: new UserHandlers(this.log, services.user),
-    };
+    const handlers = getHandlers(
+      new UserHandlers(this.log, services.user as UserService, EModule.USER),
+    );
 
-    const routes = {
-      user: new UserRoutes(handlers.user, "/users"),
-    };
+    const routes = [
+      new UserRoutes(handlers.user as UserHandlers, "/users", EModule.USER),
+    ];
 
-    for (const route of Object.values(routes)) {
+    for (const route of routes) {
       await this.api.register(route.register);
     }
   };

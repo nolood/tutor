@@ -1,80 +1,72 @@
-import type { ICreateUserDto, IUserDto } from "~/handlers/user/dto/user.dto";
-import { Repository } from "../repository.class";
-import { userTable } from "~/db/schema/user/user.schema";
-import { userConfigTable } from "~/db/schema/user-config/userConfig.schema";
 import { eq } from "drizzle-orm";
-import { ERROR } from "~/constants/enums/error-enum";
+
+import { Repository } from "../repository.class";
+
+import { EErrors } from "~/constants/enums/error-enum";
+import { userTable } from "~/db/schema/user/user.schema";
+import { userConfigTable } from "~/db/schema/user/userConfig.schema";
+import type { ICreateUserDto } from "~/handlers/user/dto/user.dto";
+
+// TODO: fix
 
 export class UserRepository extends Repository {
   getAll = async () => {
     const users = await this.db.select().from(userTable);
     return users;
   };
+
   create = async ({ email, password, name }: ICreateUserDto) => {
-    try {
-      const existingUser = await this.db.query.userConfig.findFirst({
-        where: eq(userConfigTable.email, email),
-      });
-      if (existingUser) {
-        throw new Error(ERROR.REG_ERR);
-      }
+    const existingUser = await this.db.query.userConfig.findFirst({
+      where: eq(userConfigTable.email, email),
+    });
 
-      const [user] = await this.db
-        .insert(userTable)
-        .values({ name })
-        .returning();
-
-      if (!user || !user.id) {
-        throw new Error("Ошибка создания пользователя в таблице user");
-      }
-
-      const [userConfig] = await this.db
-        .insert(userConfigTable)
-        .values({
-          userId: user.id,
-          email,
-          password,
-        })
-        .returning();
-
-      if (!userConfig) {
-        throw new Error("Ошибка создания конфигурации пользователя");
-      }
-
-      return { ...user, ...userConfig };
-    } catch (error) {
-      throw error;
+    if (existingUser) {
+      throw new Error(EErrors.REG_ERR);
     }
+
+    const [user] = await this.db.insert(userTable).values({ name }).returning();
+
+    if (!user || !user.id) {
+      throw new Error("Ошибка создания пользователя в таблице user");
+    }
+
+    const [userConfig] = await this.db
+      .insert(userConfigTable)
+      .values({
+        userId: user.id,
+        email,
+        password,
+      })
+      .returning();
+
+    if (!userConfig) {
+      throw new Error("Ошибка создания конфигурации пользователя");
+    }
+
+    return { ...user, ...userConfig };
   };
 
   findByEmail = async (email: string) => {
-    try {
-      const userConfig = await this.db.query.userConfig.findFirst({
-        where: eq(userConfigTable.email, email),
-      });
+    const [user] = await this.db
+      .select({
+        id: userTable.id,
+        name: userTable.name,
+        email: userConfigTable.email,
+        password: userConfigTable.password,
+      })
+      .from(userTable)
+      .leftJoin(userConfigTable, eq(userTable.id, userConfigTable.userId))
+      .where(eq(userConfigTable.email, email));
 
-      if (!userConfig) {
-        return null;
-      }
-
-      const user = await this.db.query.user.findFirst({
-        where: eq(userTable.id, userConfig.userId),
-      });
-
-      return { ...user, ...userConfig };
-    } catch (error) {
-      throw error;
-    }
+    return user;
   };
-  findById = async (id: string) => {
-    try {
-      const user = await this.db.query.user.findFirst({
-        where: eq(userTable.id, id),
-      });
 
-      return user;
-    } catch (error) {
-      throw error;
-    }
+  // TODO: fix
+  findById = async (id: string, kek: string) => {
+    const user = await this.db.query.user.findFirst({
+      where: (it, { eq }) => eq(it.id, kek),
+    });
+
+    return user;
   };
 }

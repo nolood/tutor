@@ -1,8 +1,13 @@
-import type { AuthService } from "./../../services/auth/auth.service";
-import { Handler } from "../handler.class";
-import { EModule, Logger } from "~/types/types";
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { ICreateUserDto, ILoginUserDto } from "../user/dto/user.dto";
+
+import { Handler } from "../handler.class";
+import type { ICreateUserDto, ILoginUserDto } from "../user/dto/user.dto";
+
+import type { AuthService } from "./../../services/auth/auth.service";
+
+import type { EModule, Logger } from "~/types/types";
+
+// TODO: add validation
 
 export class AuthHandlers extends Handler {
   authService: AuthService;
@@ -15,7 +20,7 @@ export class AuthHandlers extends Handler {
 
   register = async (
     req: FastifyRequest<{ Body: ICreateUserDto }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) => {
     try {
       if (!req.body.email || !req.body.password || !req.body.name) {
@@ -35,7 +40,7 @@ export class AuthHandlers extends Handler {
   };
   login = async (
     req: FastifyRequest<{ Body: ILoginUserDto }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) => {
     try {
       if (!req.body.email || !req.body.password) {

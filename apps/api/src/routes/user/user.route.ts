@@ -12,14 +12,14 @@ export class UserRoutes extends Route<UserHandlers> {
   public register = (
     fastify: FastifyInstance,
     opts: FastifyPluginOptions,
-    done: () => void
+    done: () => void,
   ) => {
     fastify.get(this.getPath("/all"), this.handlers.getAll);
     fastify.get(this.getPath("/one"), this.handlers.getOne);
     fastify.get(
       this.getPath("/getSelf"),
       (req: FastifyRequest, reply: FastifyReply) =>
-        this.handlers.getSelf(req, reply)
+        this.handlers.getSelf(req, reply),
     );
     done();
   };

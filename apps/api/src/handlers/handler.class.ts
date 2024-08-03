@@ -1,4 +1,5 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
+
 import type { EModule, Logger } from "../types/types";
 
 export abstract class Handler {

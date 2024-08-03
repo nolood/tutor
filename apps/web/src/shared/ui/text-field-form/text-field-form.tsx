@@ -5,12 +5,7 @@ import {
   Updater,
   Validator,
 } from "@tanstack/react-form";
-import {
-  DeepKeys,
-  FieldComponent,
-  Updater,
-  Validator,
-} from "@tanstack/react-form";
+
 import React from "react";
 
 type TextFieldFormProps<T extends Record<string, unknown>> = {
@@ -30,9 +25,6 @@ const TextFieldForm = <T extends Record<string, unknown>>({
         <Input
           {...props}
           name={field.name}
-          onChange={(e) =>
-            field.handleChange(e.target.value as Updater<T, any>)
-          }
           onChange={(e) =>
             field.handleChange(e.target.value as Updater<T, any>)
           }

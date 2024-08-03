@@ -28,14 +28,17 @@ const RegisterForm = () => {
   };
 
   return (
-    <form className={"w-full flex flex-col  gap-3"} onSubmit={onSubmit}>
+    <form
+      className={"w-1/2 items-center flex flex-col gap-3"}
+      onSubmit={onSubmit}
+    >
       <h2 className="text-center text-">Регистрация</h2>
       <TextFieldForm<z.infer<typeof formRegisterSchema>>
         Field={Field}
         className={"w-full"}
+        isRequired
         name="email"
-        variant={"bordered"}
-        color="secondary"
+        color="default"
         label="Почта"
         placeholder="@gmail.com"
         size="lg"
@@ -44,9 +47,9 @@ const RegisterForm = () => {
         Field={Field}
         className={"w-full"}
         name="password"
+        isRequired
         type={"password"}
-        variant={"bordered"}
-        color="secondary"
+        color="default"
         label={"Пароль"}
         placeholder="*****"
         size="lg"
@@ -56,15 +59,19 @@ const RegisterForm = () => {
         type={"password"}
         className={"w-full"}
         name="repeatPassword"
-        variant={"bordered"}
+        isRequired
         label={"Повторите пароль"}
         placeholder={"*****"}
-        color="secondary"
+        color="default"
         size="lg"
       />
 
-      <Button className={"w-full mt-2"} type="submit" color="primary">
-        Submit
+      <Button
+        className={"w-full mt-2 text-[18px]"}
+        type="submit"
+        color="secondary"
+      >
+        Отправить
       </Button>
     </form>
   );

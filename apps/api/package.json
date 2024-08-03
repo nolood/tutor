@@ -17,9 +17,13 @@
   },
   "dependencies": {
     "@repo/logger": "workspace:*",
-    "postgres": "^3.4.4",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.6",
+    "bcrypt": "^5.1.1",
     "drizzle-orm": "^0.32.0",
     "fastify": "^4.28.1",
+    "jsonwebtoken": "^9.0.2",
+    "postgres": "^3.4.4",
     "tsx": "^4.16.2",
     "zod": "^3.23.8"
   },

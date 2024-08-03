@@ -5,6 +5,9 @@ import type { EModule, Logger } from "../../types/types";
 import { Handler } from "../handler.class";
 
 export class UserHandlers extends Handler {
+  register(req: FastifyRequest, reply: FastifyReply): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   userService: UserService;
 
   constructor(log: Logger, userService: UserService, name: EModule) {

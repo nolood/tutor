@@ -4,4 +4,5 @@ export type Logger = typeof logger;
 
 export enum EModule {
   USER = "user",
+  AUTH = "auth",
 }

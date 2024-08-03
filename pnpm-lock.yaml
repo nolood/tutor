@@ -97,6 +97,76 @@ importers:
         specifier: ^5.3.3
         version: 5.5.3
 
+  apps/bot:
+    dependencies:
+      '@repo/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
+      drizzle-orm:
+        specifier: ^0.32.0
+        version: 0.32.0(postgres@3.4.4)
+      telegraf:
+        specifier: ^4.16.3
+        version: 4.16.3
+      tsx:
+        specifier: ^4.16.2
+        version: 4.16.2
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/jest-presets':
+        specifier: workspace:*
+        version: link:../../packages/jest-presets
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/body-parser':
+        specifier: ^1.19.5
+        version: 1.19.5
+      '@types/jest':
+        specifier: ^29.5.12
+        version: 29.5.12
+      '@types/morgan':
+        specifier: ^1.9.9
+        version: 1.9.9
+      '@types/node':
+        specifier: ^20.11.24
+        version: 20.14.11
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.2
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      dotenv-cli:
+        specifier: ^7.4.2
+        version: 7.4.2
+      esbuild:
+        specifier: ^0.20.1
+        version: 0.20.2
+      esbuild-register:
+        specifier: ^3.5.0
+        version: 3.5.0(esbuild@0.20.2)
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.14.11)
+      supertest:
+        specifier: ^6.3.3
+        version: 6.3.4
+      typescript:
+        specifier: ^5.3.3
+        version: 5.5.3
+
   apps/orchestrator:
     dependencies:
       '@repo/logger':

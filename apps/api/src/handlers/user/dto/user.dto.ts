@@ -1,12 +1,14 @@
+// TODO: FIX
+
 export interface ICreateUserDto {
   email: string;
-  password: string;
   name: string;
+  password: string;
 }
 
 export interface IUserDto {
-  id: number;
   email: string;
+  id: number;
   name: string;
   password: string;
 }

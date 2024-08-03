@@ -8,6 +8,7 @@ import type {
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { env } from "~/env";
+import { ERROR } from "~/constants/enums/error-enum";
 
 export class AuthService extends Service {
   userRepository: UserRepository;
@@ -49,13 +50,13 @@ export class AuthService extends Service {
       const user = await this.userRepository.findByEmail(email);
 
       if (!user || !user.password) {
-        throw new Error("Неверный email или пароль");
+        throw new Error(ERROR.LOG_ERR_NOT_FOUND);
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        throw new Error("Неверный email или пароль");
+        throw new Error(ERROR.LOG_ERR_PASS);
       }
 
       const jwtToken = jwt.sign(

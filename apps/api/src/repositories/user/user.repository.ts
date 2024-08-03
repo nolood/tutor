@@ -66,4 +66,15 @@ export class UserRepository extends Repository {
       throw error;
     }
   };
+  findById = async (id: string) => {
+    try {
+      const user = await this.db.query.user.findFirst({
+        where: eq(userTable.id, id),
+      });
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  };
 }

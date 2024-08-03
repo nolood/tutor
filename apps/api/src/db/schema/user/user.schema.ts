@@ -6,6 +6,4 @@ export const userTable = pgTable("user", {
   name: text("name").unique().notNull(),
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
-  email: text("email").unique().notNull(),
-  password: text("password"),
 });

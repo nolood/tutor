@@ -1,9 +1,14 @@
 import type { UserRepository } from "./../../repositories/user/user.repository";
 import { Service } from "../service.class";
 import type { EModule, Logger } from "~/types/types";
-import type { ICreateUserDto, IUserDto } from "~/handlers/user/dto/user.dto";
+import type {
+  ICreateUserDto,
+  ILoginUserDto,
+} from "~/handlers/user/dto/user.dto";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { env } from "~/env";
+
 export class AuthService extends Service {
   userRepository: UserRepository;
 
@@ -11,21 +16,48 @@ export class AuthService extends Service {
     super(log, name);
     this.userRepository = userRepository;
   }
+
   register = async (userData: ICreateUserDto) => {
     try {
       const { email, password, name } = userData;
-      console.log(userData, "userdata");
-      // Hashing the password
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Creating the user
       const user = await this.userRepository.create({
         email,
         password: hashedPassword,
         name,
       });
 
-      // Generating JWT token
+      const jwtToken = jwt.sign(
+        { id: user.id, email: user.email, name: user.name },
+        env.SECRET_KEY || "ARCH_LINUX",
+        { expiresIn: "1h" }
+      );
+
+      return { token: jwtToken, user };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Ошибка регистрации пользователя: ${error.message}`);
+      }
+    }
+  };
+
+  login = async (userData: ILoginUserDto) => {
+    try {
+      const { email, password } = userData;
+
+      const user = await this.userRepository.findByEmail(email);
+
+      if (!user) {
+        throw new Error("Неверный email или пароль");
+      }
+
+      // const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      // if (!isPasswordValid) {
+      //   throw new Error("Неверный email или пароль");
+      // }
+
       const jwtToken = jwt.sign(
         { id: user.id, email: user.email, name: user.name },
         process.env.JWT_SECRET || "ARCH_LINUX",
@@ -35,10 +67,7 @@ export class AuthService extends Service {
       return { token: jwtToken, user };
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(`Ошибка регистрации пользователя ${error.message}`);
-      } else {
-        console.error("Unknown error in AuthService.register");
-        throw new Error("Произошла неизвестная ошибка");
+        throw new Error(`Ошибка аутентификации пользователя: ${error.message}`);
       }
     }
   };

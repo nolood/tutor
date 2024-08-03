@@ -2,7 +2,7 @@ import type { AuthService } from "./../../services/auth/auth.service";
 import { Handler } from "../handler.class";
 import { EModule, Logger } from "~/types/types";
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { ICreateUserDto } from "../user/dto/user.dto";
+import { ICreateUserDto, ILoginUserDto } from "../user/dto/user.dto";
 
 export class AuthHandlers extends Handler {
   authService: AuthService;
@@ -18,18 +18,31 @@ export class AuthHandlers extends Handler {
     reply: FastifyReply
   ) => {
     try {
-      console.log("Request body:", req.body);
+      if (!req.body.email || !req.body.password || !req.body.password) {
+        reply
+          .status(400)
+          .send({ message: "Поля email, пароль и пароль обязательны" });
+      }
       const user = await this.authService.register({
         ...req.body,
       });
+      reply.status(200).send(user);
+    } catch (error) {
+      if (error instanceof Error) {
+        reply.status(400).send({ message: error.message });
+      }
+    }
+  };
+  login = async (
+    req: FastifyRequest<{ Body: ILoginUserDto }>,
+    reply: FastifyReply
+  ) => {
+    try {
+      const user = await this.authService.login({ ...req.body });
       reply.send(user);
     } catch (error) {
-      console.error("Error in AuthHandlers.register:", error);
       if (error instanceof Error) {
-        reply.status(500).send({ message: error.message });
-      } else {
-        // Обрабатываем ситуацию, когда ошибка не является экземпляром Error
-        reply.status(500).send({ message: "Произошла неизвестная ошибка" });
+        reply.status(400).send({ message: error.message });
       }
     }
   };

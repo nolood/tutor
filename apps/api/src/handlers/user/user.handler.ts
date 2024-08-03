@@ -1,14 +1,14 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 
 import type { UserService } from "../../services/user/user.service";
-import type { Logger } from "../../types/types";
+import type { EModule, Logger } from "../../types/types";
 import { Handler } from "../handler.class";
 
 export class UserHandlers extends Handler {
   userService: UserService;
 
-  constructor(log: Logger, userService: UserService) {
-    super(log);
+  constructor(log: Logger, userService: UserService, name: EModule) {
+    super(log, name);
 
     this.userService = userService;
   }

@@ -1,12 +1,8 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
+import type { FastifyReply } from "fastify";
 
 import type { UserService } from "../../services/user/user.service";
-import type { EModule, Logger } from "../../types/types";
+import type { EModule, IAuthenticatedRequest, Logger } from "../../types/types";
 import { Handler } from "../handler.class";
-
-import { EErrors } from "~/constants/enums/error-enum";
-
-// TODO: fix
 
 export class UserHandlers extends Handler {
   userService: UserService;
@@ -17,33 +13,21 @@ export class UserHandlers extends Handler {
     this.userService = userService;
   }
 
-  register(req: FastifyRequest, reply: FastifyReply): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-
-  getAll = async (req: FastifyRequest, reply: FastifyReply) => {
+  getAll = async (req: IAuthenticatedRequest, reply: FastifyReply) => {
     const user = await this.userService.getAll();
 
     reply.send(user);
   };
 
-  getOne = async (req: FastifyRequest, reply: FastifyReply) => {
+  getOne = async (req: IAuthenticatedRequest, reply: FastifyReply) => {
     reply.send({ message: "Hello World" });
   };
 
-  getSelf = async (req: FastifyRequest, reply: FastifyReply) => {
-    try {
-      const token = req.headers.authorization;
+  getSelf = async (req: IAuthenticatedRequest, reply: FastifyReply) => {
+    const userId = this.getUserId(req);
 
-      if (!token) {
-        reply.status(401).send(EErrors.AUTH_ERR);
-        return;
-      }
-      const user = await this.userService.getSelf(token);
-      reply.status(200).send(user);
-    } catch (error) {
-      this.log.info(error);
-      reply.status(500).send(error);
-    }
+    const user = await this.userService.getSelf(userId);
+
+    reply.status(200).send(user);
   };
 }

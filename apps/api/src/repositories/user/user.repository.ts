@@ -5,9 +5,7 @@ import { Repository } from "../repository.class";
 import { EErrors } from "~/constants/enums/error-enum";
 import { userTable } from "~/db/schema/user/user.schema";
 import { userConfigTable } from "~/db/schema/user/userConfig.schema";
-import type { ICreateUserDto } from "~/handlers/user/dto/user.dto";
-
-// TODO: fix
+import type { TRegisterDto } from "~/handlers/auth/dto/auth.dto";
 
 export class UserRepository extends Repository {
   getAll = async () => {
@@ -15,7 +13,7 @@ export class UserRepository extends Repository {
     return users;
   };
 
-  create = async ({ email, password, name }: ICreateUserDto) => {
+  create = async ({ email, password, name }: TRegisterDto) => {
     const existingUser = await this.db.query.userConfig.findFirst({
       where: eq(userConfigTable.email, email),
     });
@@ -26,10 +24,6 @@ export class UserRepository extends Repository {
 
     const [user] = await this.db.insert(userTable).values({ name }).returning();
 
-    if (!user || !user.id) {
-      throw new Error("Ошибка создания пользователя в таблице user");
-    }
-
     const [userConfig] = await this.db
       .insert(userConfigTable)
       .values({
@@ -38,10 +32,6 @@ export class UserRepository extends Repository {
         password,
       })
       .returning();
-
-    if (!userConfig) {
-      throw new Error("Ошибка создания конфигурации пользователя");
-    }
 
     return { ...user, ...userConfig };
   };
@@ -61,11 +51,11 @@ export class UserRepository extends Repository {
     return user;
   };
 
-  // TODO: fix
-  findById = async (id: string, kek: string) => {
-    const user = await this.db.query.user.findFirst({
-      where: (it, { eq }) => eq(it.id, kek),
-    });
+  findById = async (id: string) => {
+    const [user] = await this.db
+      .select()
+      .from(userTable)
+      .where(eq(userTable.id, id));
 
     return user;
   };

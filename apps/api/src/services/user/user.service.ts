@@ -1,9 +1,6 @@
-import jwt from "jsonwebtoken";
-
 import { Service } from "../service.class";
 
 import { EErrors } from "~/constants/enums/error-enum";
-import { env } from "~/env";
 import type { UserRepository } from "~/repositories/user/user.repository";
 import type { EModule, Logger } from "~/types/types";
 export class UserService extends Service {
@@ -17,15 +14,8 @@ export class UserService extends Service {
   getAll = async () => {
     return this.userRepository.getAll();
   };
-  getSelf = async (tokenHeader: string) => {
-    const token = tokenHeader.split(" ")[1];
-    const decoded = jwt.verify(token, env.SECRET_KEY || "ARCH_LINUX") as {
-      email: string;
-      id: string;
-      name: string;
-    };
-    this.log.info(`${decoded.id} userId`);
-    const user = await this.userRepository.findByEmail(decoded.email);
+  getSelf = async (id: string) => {
+    const user = await this.userRepository.findById(id);
 
     if (!user) {
       throw new Error(EErrors.USER_NOT_FOUND);

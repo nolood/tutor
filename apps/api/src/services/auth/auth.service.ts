@@ -7,10 +7,7 @@ import type { UserRepository } from "./../../repositories/user/user.repository";
 
 import { EErrors } from "~/constants/enums/error-enum";
 import { env } from "~/env";
-import type {
-  ICreateUserDto,
-  ILoginUserDto,
-} from "~/handlers/user/dto/user.dto";
+import type { TLoginDto, TRegisterDto } from "~/handlers/auth/dto/auth.dto";
 import type { EModule, Logger } from "~/types/types";
 
 export class AuthService extends Service {
@@ -21,7 +18,7 @@ export class AuthService extends Service {
     this.userRepository = userRepository;
   }
 
-  register = async (userData: ICreateUserDto) => {
+  register = async (userData: TRegisterDto) => {
     const { email, password, name } = userData;
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -31,21 +28,17 @@ export class AuthService extends Service {
       name,
     });
 
-    const jwtToken = jwt.sign(
-      { id: user.id, email: user.email, name: user.name },
-      env.SECRET_KEY || "ARCH_LINUX",
-      { expiresIn: "1h" },
-    );
+    const token = this.createToken(user.id, user.email, user.name);
 
-    return { token: jwtToken, user };
+    return { token, user };
   };
 
-  login = async (userData: ILoginUserDto) => {
+  login = async (userData: TLoginDto) => {
     const { email, password } = userData;
 
     const user = await this.userRepository.findByEmail(email);
 
-    if (!user || !user.password) {
+    if (!user || !user.password || !user.email) {
       throw new Error(EErrors.AUTH_ERR);
     }
 
@@ -55,12 +48,16 @@ export class AuthService extends Service {
       throw new Error(EErrors.LOG_ERR_PASS);
     }
 
-    const jwtToken = jwt.sign(
-      { id: user.id, email: user.email, name: user.name },
-      process.env.JWT_SECRET || "ARCH_LINUX",
-      { expiresIn: "1h" },
-    );
+    const token = this.createToken(user.id, user.email, user.name);
 
-    return { token: jwtToken, user };
+    return { token, user };
+  };
+
+  createToken = (id: string, email: string, name: string) => {
+    const token = jwt.sign({ id: id, email, name }, env.SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
+    return token;
   };
 }

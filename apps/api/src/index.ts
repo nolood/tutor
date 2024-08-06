@@ -1,3 +1,4 @@
+import cors from "@fastify/cors";
 import logger, { LoggerSettings } from "@repo/logger";
 import type { FastifyInstance } from "fastify";
 import { fastify } from "fastify";
@@ -24,6 +25,8 @@ class Server {
     this.api = fastify({
       logger: LoggerSettings,
     });
+
+    this.api.register(cors);
 
     this.log = logger;
   }

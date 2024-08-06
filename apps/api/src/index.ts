@@ -1,3 +1,4 @@
+import cors from "@fastify/cors";
 import logger, { LoggerSettings } from "@repo/logger";
 import type { FastifyInstance } from "fastify";
 import { fastify } from "fastify";
@@ -25,30 +26,32 @@ class Server {
       logger: LoggerSettings,
     });
 
+    this.api.register(cors);
+
     this.log = logger;
   }
 
   init = async () => {
     const repositories = getRepositories(
-      new UserRepository(this.log, EModule.USER),
+      new UserRepository(this.log, EModule.USER)
     );
 
     const services = getServices(
       new UserService(
         this.log,
         repositories.user as UserRepository,
-        EModule.USER,
+        EModule.USER
       ),
       new AuthService(
         this.log,
         repositories.user as UserRepository,
-        EModule.AUTH,
-      ),
+        EModule.AUTH
+      )
     );
 
     const handlers = getHandlers(
       new UserHandlers(this.log, services.user as UserService, EModule.USER),
-      new AuthHandlers(this.log, services.auth as AuthService, EModule.AUTH),
+      new AuthHandlers(this.log, services.auth as AuthService, EModule.AUTH)
     );
 
     const routes = [

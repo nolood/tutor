@@ -14,7 +14,7 @@ import { EModule, type Logger } from "./types/types";
 import { AuthService } from "./services/auth/auth.service";
 import { AuthHandlers } from "./handlers/auth/auth.handler";
 import { AuthRoutes } from "./routes/auth/auth.route";
-
+import fastifyCors from "fastify-cors";
 class Server {
   api: FastifyInstance;
   log: Logger;
@@ -23,7 +23,10 @@ class Server {
     this.api = fastify({
       logger: LoggerSettings,
     });
-
+    this.api.register(fastifyCors, {
+      origin: true,
+      methods: ["GET", "PUT", "POST", "DELETE"],
+    });
     this.log = logger;
   }
 

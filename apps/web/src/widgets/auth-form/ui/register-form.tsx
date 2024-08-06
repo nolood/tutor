@@ -6,10 +6,12 @@ import { Button } from "@nextui-org/button";
 import { TextFieldForm } from "~/shared/ui/text-field-form";
 import { z } from "zod";
 import LinkVariantsForm from "./link-variants-form";
+import { sendRegister } from "../api/send-register";
 
 const RegisterForm = () => {
-  const { handleSubmit, Field } = useForm({
+  const { handleSubmit, Field, state } = useForm({
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       repeatPassword: "",
@@ -18,8 +20,8 @@ const RegisterForm = () => {
     validators: {
       onChange: formRegisterSchema,
     },
-    onSubmit: ({ value }) => {
-      console.log(value);
+    onSubmit: async ({ value }) => {
+      await sendRegister({ ...value });
     },
   });
 
@@ -27,21 +29,22 @@ const RegisterForm = () => {
     e.preventDefault();
     handleSubmit();
   };
-
   return (
     <form
       className={"w-1/2 items-center flex flex-col gap-3"}
       onSubmit={onSubmit}
     >
-      <h2 className="text-start text-2xl">Регистрация</h2>
+      <h2 className="text-2xl text-start">Регистрация</h2>
       <TextFieldForm<z.infer<typeof formRegisterSchema>>
         Field={Field}
         className={"w-full"}
         isRequired
-        name="email"
+        name="name"
         color="default"
         label="Ник-нейм"
         placeholder="f1k..."
+        isInvalid={!state.isFormValid}
+        errorMessage={state.errors[0]}
         size="lg"
       />
       <TextFieldForm<z.infer<typeof formRegisterSchema>>
@@ -51,6 +54,8 @@ const RegisterForm = () => {
         name="email"
         color="default"
         label="Почта"
+        isInvalid={!state.isFormValid}
+        errorMessage={state.errors[0]}
         placeholder="@gmail.com"
         size="lg"
       />
@@ -59,6 +64,8 @@ const RegisterForm = () => {
         className={"w-full"}
         name="password"
         isRequired
+        isInvalid={!state.isFormValid}
+        errorMessage={state.errors[0]}
         type={"password"}
         color="default"
         label={"Пароль"}
@@ -67,13 +74,15 @@ const RegisterForm = () => {
       />
       <TextFieldForm<z.infer<typeof formRegisterSchema>>
         Field={Field}
-        type={"password"}
         className={"w-full"}
         name="repeatPassword"
         isRequired
-        label={"Повторите пароль"}
-        placeholder={"*****"}
+        isInvalid={!state.isFormValid}
+        errorMessage={state.errors[0]}
+        type={"password"}
         color="default"
+        label={"Пароль"}
+        placeholder="*****"
         size="lg"
       />
       <Button

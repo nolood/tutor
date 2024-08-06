@@ -1,7 +1,10 @@
-import type { FastifyRequest, FastifyReply } from "fastify";
-import type { EModule, Logger } from "../types/types";
+import type { ZodSchema } from "zod";
 
-export abstract class Handler {
+import type { EModule, IAuthenticatedRequest, Logger } from "../types/types";
+
+import { EErrors } from "~/constants/enums/error-enum";
+
+export class Handler {
   public name: EModule;
 
   protected log: Logger;
@@ -11,5 +14,21 @@ export abstract class Handler {
     this.log = log;
   }
 
-  abstract register(req: FastifyRequest, reply: FastifyReply): Promise<void>;
+  getUserId = (req: IAuthenticatedRequest) => {
+    const userId = req?.userId;
+
+    if (!userId) {
+      throw new Error(EErrors.AUTH_ERR);
+    }
+
+    return userId;
+  };
+
+  validate = <T>(schema: ZodSchema, data: unknown): T => {
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      throw new Error(result.error.message);
+    }
+    return result.data;
+  };
 }

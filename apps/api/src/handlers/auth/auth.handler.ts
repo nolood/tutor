@@ -1,8 +1,13 @@
-import type { AuthService } from "./../../services/auth/auth.service";
-import { Handler } from "../handler.class";
-import { EModule, Logger } from "~/types/types";
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { ICreateUserDto, ILoginUserDto } from "../user/dto/user.dto";
+
+import { Handler } from "../handler.class";
+
+import type { AuthService } from "./../../services/auth/auth.service";
+import type { TLoginDto, TRegisterDto } from "./dto/auth.dto";
+import { loginDtoSchema } from "./dto/auth.dto";
+import { registerDtoSchema } from "./dto/auth.dto";
+
+import type { EModule, Logger } from "~/types/types";
 
 export class AuthHandlers extends Handler {
   authService: AuthService;
@@ -13,19 +18,12 @@ export class AuthHandlers extends Handler {
     this.authService = authService;
   }
 
-  register = async (
-    req: FastifyRequest<{ Body: ICreateUserDto }>,
-    reply: FastifyReply
-  ) => {
+  register = async (req: FastifyRequest, reply: FastifyReply) => {
     try {
-      if (!req.body.email || !req.body.password || !req.body.name) {
-        reply
-          .status(400)
-          .send({ message: "Поля email, пароль и name обязательны" });
-      }
-      const user = await this.authService.register({
-        ...req.body,
-      });
+      const body = this.validate<TRegisterDto>(registerDtoSchema, req.body);
+
+      const user = await this.authService.register(body);
+
       reply.status(200).send(user);
     } catch (error) {
       if (error instanceof Error) {
@@ -33,16 +31,12 @@ export class AuthHandlers extends Handler {
       }
     }
   };
-  login = async (
-    req: FastifyRequest<{ Body: ILoginUserDto }>,
-    reply: FastifyReply
-  ) => {
+  login = async (req: FastifyRequest, reply: FastifyReply) => {
     try {
-      if (!req.body.email || !req.body.password) {
-        reply.status(400).send({ message: "Поля email и пароль обязательны" });
-      }
-      const user = await this.authService.login({ ...req.body });
-      reply.send(user);
+      const body = this.validate<TLoginDto>(loginDtoSchema, req.body);
+
+      const user = await this.authService.login(body);
+      reply.status(200).send(user);
     } catch (error) {
       if (error instanceof Error) {
         reply.status(400).send({ message: error.message });

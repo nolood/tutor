@@ -4,17 +4,18 @@ import { fastify } from "fastify";
 
 import { env } from "./env";
 import getHandlers from "./handlers";
+import { AuthHandlers } from "./handlers/auth/auth.handler";
 import { UserHandlers } from "./handlers/user/user.handler";
+import { AuthMiddleware } from "./middlewares/auth.middleware";
 import getRepositories from "./repositories";
 import { UserRepository } from "./repositories/user/user.repository";
+import { AuthRoutes } from "./routes/auth/auth.route";
 import { UserRoutes } from "./routes/user/user.route";
 import getServices from "./services";
+import { AuthService } from "./services/auth/auth.service";
 import { UserService } from "./services/user/user.service";
 import { EModule, type Logger } from "./types/types";
-import { AuthService } from "./services/auth/auth.service";
-import { AuthHandlers } from "./handlers/auth/auth.handler";
-import { AuthRoutes } from "./routes/auth/auth.route";
-import fastifyCors from "fastify-cors";
+
 class Server {
   api: FastifyInstance;
   log: Logger;
@@ -23,10 +24,7 @@ class Server {
     this.api = fastify({
       logger: LoggerSettings,
     });
-    this.api.register(fastifyCors, {
-      origin: true,
-      methods: ["GET", "PUT", "POST", "DELETE"],
-    });
+
     this.log = logger;
   }
 
@@ -54,12 +52,17 @@ class Server {
     );
 
     const routes = [
-      new UserRoutes(handlers.user as UserHandlers, "/users", EModule.USER),
+      new UserRoutes(handlers.user as UserHandlers, "/users", EModule.USER, [
+        new AuthMiddleware(),
+      ]),
       new AuthRoutes(handlers.auth as AuthHandlers, "/auth", EModule.AUTH),
     ];
 
     for (const route of routes) {
-      await this.api.register(route.register);
+      console.log(route.prefix);
+      await this.api.register(route.register.bind(route), {
+        prefix: route.prefix,
+      });
     }
   };
 

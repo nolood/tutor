@@ -1,14 +1,19 @@
 import { Markup, type Telegraf } from "telegraf";
 
-import { ECallbacks } from "../constants/callbacks";
 import { texts } from "../constants/texts";
 import { type IBotContext } from "../context/context";
 
 import { Command } from "./command.class";
 
+import type { AuthService } from "~/services/auth/auth.service";
+
 export class StartCommand extends Command {
-  constructor(bot: Telegraf<IBotContext>) {
+  authService: AuthService;
+
+  constructor(bot: Telegraf<IBotContext>, authService: AuthService) {
     super(bot);
+
+    this.authService = authService;
 
     this.bot.use();
   }
@@ -19,8 +24,8 @@ export class StartCommand extends Command {
         await ctx.reply(
           texts.start.text,
           Markup.inlineKeyboard([
-            [Markup.button.url(texts.start.signin, ECallbacks.SIGNIN)],
-            [Markup.button.url(texts.start.login, ECallbacks.LOGIN)],
+            [Markup.button.url(texts.start.signin, "signin url")],
+            [Markup.button.url(texts.start.login, "login url")],
           ]),
         );
         // ctx.scene.enter("test-scene");
@@ -29,4 +34,6 @@ export class StartCommand extends Command {
       }
     });
   };
+
+  getRegisterUrl = () => {};
 }

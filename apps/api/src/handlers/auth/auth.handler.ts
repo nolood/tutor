@@ -31,6 +31,7 @@ export class AuthHandlers extends Handler {
       }
     }
   };
+
   login = async (req: FastifyRequest, reply: FastifyReply) => {
     try {
       const body = this.validate<TLoginDto>(loginDtoSchema, req.body);

@@ -6,14 +6,17 @@ import { fastify } from "fastify";
 import { env } from "./env";
 import getHandlers from "./handlers";
 import { AuthHandlers } from "./handlers/auth/auth.handler";
+import { BotHandlers } from "./handlers/bot/bot.handlers";
 import { UserHandlers } from "./handlers/user/user.handler";
 import { AuthMiddleware } from "./middlewares/auth.middleware";
 import getRepositories from "./repositories";
 import { UserRepository } from "./repositories/user/user.repository";
 import { AuthRoutes } from "./routes/auth/auth.route";
+import { BotRoutes } from "./routes/bot/bot.route";
 import { UserRoutes } from "./routes/user/user.route";
 import getServices from "./services";
 import { AuthService } from "./services/auth/auth.service";
+import { BotService } from "./services/bot/bot.service";
 import { UserService } from "./services/user/user.service";
 import { EModule, type Logger } from "./types/types";
 
@@ -47,11 +50,17 @@ class Server {
         repositories.user as UserRepository,
         EModule.AUTH,
       ),
+      new BotService(
+        this.log,
+        EModule.BOT,
+        repositories.user as UserRepository,
+      ),
     );
 
     const handlers = getHandlers(
       new UserHandlers(this.log, services.user as UserService, EModule.USER),
       new AuthHandlers(this.log, services.auth as AuthService, EModule.AUTH),
+      new BotHandlers(this.log, EModule.BOT, services.bot as BotService),
     );
 
     const routes = [
@@ -59,6 +68,7 @@ class Server {
         new AuthMiddleware(),
       ]),
       new AuthRoutes(handlers.auth as AuthHandlers, "/auth", EModule.AUTH),
+      new BotRoutes(handlers.bot as BotHandlers, "/bot", EModule.BOT),
     ];
 
     for (const route of routes) {

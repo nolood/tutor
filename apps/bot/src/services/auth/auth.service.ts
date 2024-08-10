@@ -2,12 +2,14 @@ import type { User } from "telegraf/types";
 
 import { Service } from "../service.class";
 
+import { UserApi } from "~/api/user/user.api";
+
 export class AuthService extends Service {
-  private createUserConfig = () => {};
+  userApi: UserApi = new UserApi();
 
   getIsAuth = (user: User): boolean => {
-    console.log(user, "user");
+    const data = this.userApi.createOrUpdateUserConfig(user);
 
-    return true;
+    return !!data;
   };
 }

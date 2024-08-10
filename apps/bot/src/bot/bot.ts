@@ -4,7 +4,7 @@ import { Scenes, Telegraf, session } from "telegraf";
 import { StartCommand } from "./commands/start.command";
 import type { IBotContext } from "./context/context";
 import { loggerMiddleware } from "./middlewares/logger.middleware";
-import { Scene } from "./scenes/scene";
+import { AuthScene } from "./scenes/auth.scene";
 
 export class Bot {
   protected bot: Telegraf<IBotContext>;
@@ -16,7 +16,7 @@ export class Bot {
     this.bot.use(session());
     this.bot.use(loggerMiddleware);
 
-    const stage = new Scenes.Stage<IBotContext>([new Scene("test-scene")]);
+    const stage = new Scenes.Stage<IBotContext>([new AuthScene()]);
 
     this.bot.use(stage.middleware());
   }

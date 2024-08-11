@@ -2,7 +2,7 @@ import type { User } from "telegraf/types";
 
 import { Api } from "../api.class";
 
-import type { TUserConfigCreate } from "./dto/user.dto";
+import { userConfigCreateSchema, type TUserConfigCreate } from "./dto/user.dto";
 
 export class UserApi extends Api {
   constructor() {
@@ -13,6 +13,8 @@ export class UserApi extends Api {
     const config = await this.api.post<TUserConfigCreate>("/bot/config", {
       ...userConfig,
     });
+
+    this.validate(userConfigCreateSchema, config.data);
 
     return config.data;
   };

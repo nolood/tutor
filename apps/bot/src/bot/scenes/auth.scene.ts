@@ -1,8 +1,11 @@
+import { Markup } from "telegraf";
+
 import { EScenes } from "../constants/scenes";
 import { texts } from "../constants/texts";
 
 import { Scene } from "./scene.class";
 
+import { env } from "~/env";
 import { AuthService } from "~/services/auth/auth.service";
 
 export class AuthScene extends Scene {
@@ -19,13 +22,27 @@ export class AuthScene extends Scene {
           return;
         }
 
-        const isAuth = this.authService.getIsAuth(user);
+        const userConfig = await this.authService.getUserConfig(user);
 
-        if (isAuth) {
-          ctx.reply(texts.auth.auth);
+        if (userConfig.userId) {
+          const url =
+            env.FRONT_URL +
+            `/platform-auth?platform=telegram&token=${userConfig.id}`;
+
+          ctx.reply(
+            texts.auth.auth,
+            Markup.inlineKeyboard([Markup.button.url("Войти", url)]),
+          );
+
+          return;
         }
 
-        ctx.reply(texts.auth.notAuth);
+        const url = env.FRONT_URL + `/auth?token=${user.id}`;
+
+        ctx.reply(
+          texts.auth.notAuth,
+          Markup.inlineKeyboard([Markup.button.url("Регистрация", url)]),
+        );
       } catch (e) {
         ctx.log.info(e);
         ctx.scene.leave();

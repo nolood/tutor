@@ -73,7 +73,15 @@ export class UserRepository extends Repository {
     const [config] = await this.db
       .insert(userConfigTable)
       .values(data)
-      .returning();
+      .returning()
+      .onConflictDoUpdate({
+        target: [
+          userConfigTable.tgId,
+          userConfigTable.tgUsername,
+          userConfigTable.tgFirstName,
+        ],
+        set: data,
+      });
 
     return config;
   };

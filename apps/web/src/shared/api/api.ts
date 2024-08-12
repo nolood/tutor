@@ -1,10 +1,20 @@
 import axios from "axios";
+import { env } from "~/env";
 
-export const api = axios.create({
-  baseURL: "http://127.0.0.1:5000",
-  headers: { "Content-Type": "application/json" },
+export const api = axios.create({ baseURL: env.API_URL });
+
+export const setTokenToHeaders = (token: string): void => {
+  const newHeaders = {
+    ...api.defaults.headers.common,
+    Authorization: `Bearer ${token}`,
+  };
+  api.defaults.headers.common = { ...newHeaders };
+};
+
+api.interceptors.request.use((config) => {
+  return config;
 });
 
-export const setTokenToApi = (token?: string) => {
-  api.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
+api.interceptors.response.use((config) => {
+  return config;
+});

@@ -29,6 +29,7 @@ const RegisterForm = () => {
     e.preventDefault();
     handleSubmit();
   };
+
   return (
     <form
       className={"w-1/2 items-center flex flex-col gap-3"}

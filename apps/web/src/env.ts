@@ -1,14 +1,16 @@
 import { config } from "dotenv";
 import { z } from "zod";
+config();
 
 export const EnvSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]),
+  API_URL: z.string()
 });
 
-config();
 
 const envObj = {
   NODE_ENV: process.env.NODE_ENV,
+  API_URL: process.env.NEXT_PUBLIC_API_URL
 };
 
 let _env;

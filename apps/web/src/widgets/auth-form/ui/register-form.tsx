@@ -6,9 +6,10 @@ import { Button } from "@nextui-org/button";
 import { TextFieldForm } from "~/shared/ui/text-field-form";
 import { z } from "zod";
 import LinkVariantsForm from "./link-variants-form";
-import { sendRegister } from "../api/send-register";
+import { useRegister } from "../hooks/use-register";
 
 const RegisterForm = () => {
+  const {handleSend} = useRegister();
   const { handleSubmit, Field, state } = useForm({
     defaultValues: {
       name: "",
@@ -21,7 +22,7 @@ const RegisterForm = () => {
       onChange: formRegisterSchema,
     },
     onSubmit: async ({ value }) => {
-      await sendRegister({ ...value });
+      await handleSend({ ...value });
     },
   });
 
@@ -97,7 +98,7 @@ const RegisterForm = () => {
       </Button>
       <LinkVariantsForm
         title={"Есть аккаунт?"}
-        link={"/login"}
+        link={"/sign-in"}
         text={"Войдите"}
       />
     </form>
@@ -105,3 +106,5 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+
+

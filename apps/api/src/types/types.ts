@@ -6,7 +6,7 @@ export type Logger = typeof logger;
 export enum EModule {
   AUTH = "auth",
   BOT = "bot",
-  USER = "user",
+  USER = "users",
 }
 
 export type TTokenPayload = {

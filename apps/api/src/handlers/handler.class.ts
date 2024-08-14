@@ -1,3 +1,4 @@
+import type { FastifyReply, FastifyRequest } from "fastify";
 import type { ZodSchema } from "zod";
 
 import type { EModule, IAuthenticatedRequest, Logger } from "../types/types";
@@ -30,5 +31,9 @@ export class Handler {
       throw new Error(result.error.message);
     }
     return result.data;
+  };
+
+  test = (req: FastifyRequest, reply: FastifyReply) => {
+    return reply.status(200).send(true);
   };
 }

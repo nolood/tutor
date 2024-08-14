@@ -28,6 +28,10 @@ export class AuthService extends Service {
       name,
     });
 
+    if (!user.email) {
+      return;
+    }
+
     const token = this.createToken(user.id, user.email, user.name);
 
     return { token, user };

@@ -17,6 +17,7 @@ import { BotService } from "./services/bot/bot.service";
 import { UserService } from "./services/user/user.service";
 import { EModule, type Logger } from "./types/types";
 
+// Server
 export class Server {
   private api: FastifyInstance;
   private isTest = false;

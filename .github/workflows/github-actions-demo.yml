@@ -57,28 +57,28 @@ jobs:
         run: |
           if [[ "$CHANGED_FILES" == *"web"* ]]; then
             echo "Build and test web"
-            pnpm test --filter=web --if-present
-            pnpm build --filter=web --if-present
+            pnpm test --filter=web 
+            pnpm build --filter=web 
           fi
           if [[ "$CHANGED_FILES" == *"api"* ]]; then
             echo "Build and test api"
-            pnpm test --filter=api --if-present
-            pnpm build --filter=api --if-present
+            pnpm test --filter=api 
+            pnpm build --filter=api 
           fi
           if [[ "$CHANGED_FILES" == *"bot"* ]]; then
             echo "Build and test bot"
-            pnpm test --filter=bot --if-present
-            pnpm build --filter=bot --if-present
+            pnpm test --filter=bot 
+            pnpm build --filter=bot 
           fi
           if [[ "$CHANGED_FILES" == *"orchestrator"* ]]; then
             echo "Build and test orchestrator"
-            pnpm test --filter=orchestrator --if-present
-            pnpm build --filter=orchestrator --if-present
+            pnpm test --filter=orchestrator 
+            pnpm build --filter=orchestrator 
           fi
           if [[ "$CHANGED_FILES" == *"logger"* ]]; then
             echo "Build and test logger"
-            pnpm test --filter=@repo/logger --if-present
-            pnpm build --filter=@repo/logger --if-present
+            pnpm test --filter=@repo/logger 
+            pnpm build --filter=@repo/logger 
           fi
 
 

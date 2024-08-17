@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - test-ci
   pull_request:
     branches:
       - main
+      - test-ci
 
 jobs:
   build-and-test:
@@ -41,37 +43,42 @@ jobs:
         run: |
           git fetch origin main
           CHANGED_FILES=$(git diff --name-only HEAD origin/main)
-          echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
+          echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Debug changed files
+        run: echo "Changed files $CHANGED_FILES"
 
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build and test packages
+        run: |
+          pnpm test --filter='@repo/*'
+          pnpm build --filter='@repo/*'
+
       - name: Build and test
         run: |
-          if [[ "$CHANGED_FILES" == *"web"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/web"* ]]; then
             echo "Build and test web"
-            pnpm test --filter=web --if-present
-            pnpm build --filter=web --if-present
+            pnpm test --filter=web 
+            pnpm build --filter=web 
           fi
-          if [[ "$CHANGED_FILES" == *"api"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/api"* ]]; then
             echo "Build and test api"
-            pnpm test --filter=api --if-present
-            pnpm build --filter=api --if-present
+            pnpm test --filter=api 
+            pnpm build --filter=api 
           fi
-          if [[ "$CHANGED_FILES" == *"bot"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/bot"* ]]; then
             echo "Build and test bot"
-            pnpm test --filter=bot --if-present
-            pnpm build --filter=bot --if-present
+            pnpm test --filter=bot 
+            pnpm build --filter=bot 
           fi
-          if [[ "$CHANGED_FILES" == *"orchestrator"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/orchestrator"* ]]; then
             echo "Build and test orchestrator"
-            pnpm test --filter=orchestrator --if-present
-            pnpm build --filter=orchestrator --if-present
-          fi
-          if [[ "$CHANGED_FILES" == *"logger"* ]]; then
-            echo "Build and test logger"
-            pnpm test --filter=@repo/logger --if-present
-            pnpm build --filter=@repo/logger --if-present
+            pnpm test --filter=orchestrator 
+            pnpm build --filter=orchestrator 
           fi
 
 

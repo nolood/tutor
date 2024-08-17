@@ -53,6 +53,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build and test packages
+        run: |
+          pnpm test --filter='@repo/*'
+          pnpm build --filter='@repo/*'
+
       - name: Build and test
         run: |
           if [[ "$CHANGED_FILES" == *"web"* ]]; then
@@ -74,11 +79,6 @@ jobs:
             echo "Build and test orchestrator"
             pnpm test --filter=orchestrator 
             pnpm build --filter=orchestrator 
-          fi
-          if [[ "$CHANGED_FILES" == *"logger"* ]]; then
-            echo "Build and test logger"
-            pnpm test --filter=@repo/logger 
-            pnpm build --filter=@repo/logger 
           fi
 
 

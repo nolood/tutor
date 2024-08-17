@@ -29,7 +29,7 @@ const Onboarding = ({
               onClick={() => setCurrentStep((prev) => prev + 1)}
               className="absolute top-1/2 right-[10%] z-20"
             >
-              Далее
+              Далее1
             </Button>
           </div>
         )}

@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - test-ci
   pull_request:
     branches:
       - main
+      - test-ci
 
 jobs:
   build-and-test:
@@ -42,6 +44,9 @@ jobs:
           git fetch origin main
           CHANGED_FILES=$(git diff --name-only HEAD origin/main)
           echo "changed_files=$CHANGED_FILES" >> $GITHUB_ENV
+
+      - name: Debug changed files
+        run: echo "Changed files $CHANGED_FILES"
 
       - name: Install dependencies
         run: pnpm install

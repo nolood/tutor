@@ -1,5 +1,5 @@
-import { userTable, userTableRelations } from "./user.schema.js";
-import { userConfigRelations, userConfigTable } from "./userConfig.schema.js";
+import { userTable, userTableRelations } from "./user.schema";
+import { userConfigRelations, userConfigTable } from "./userConfig.schema";
 
 export const userSchema = {
   user: userTable,

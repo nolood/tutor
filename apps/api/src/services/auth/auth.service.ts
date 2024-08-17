@@ -8,13 +8,13 @@ import type { UserRepository } from "./../../repositories/user/user.repository";
 import { EErrors } from "~/constants/enums/error-enum";
 import { env } from "~/env";
 import type { TLoginDto, TRegisterDto } from "~/handlers/auth/dto/auth.dto";
-import type { EModule, Logger } from "~/types/types";
+import type { Logger } from "~/types/types";
 
 export class AuthService extends Service {
   userRepository: UserRepository;
 
-  constructor(log: Logger, userRepository: UserRepository, name: EModule) {
-    super(log, name);
+  constructor(log: Logger, userRepository: UserRepository) {
+    super(log);
     this.userRepository = userRepository;
   }
 
@@ -27,6 +27,10 @@ export class AuthService extends Service {
       password: hashedPassword,
       name,
     });
+
+    if (!user.email) {
+      return;
+    }
 
     const token = this.createToken(user.id, user.email, user.name);
 

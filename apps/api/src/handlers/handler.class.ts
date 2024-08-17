@@ -1,16 +1,14 @@
+import type { FastifyReply, FastifyRequest } from "fastify";
 import type { ZodSchema } from "zod";
 
-import type { EModule, IAuthenticatedRequest, Logger } from "../types/types";
+import type { IAuthenticatedRequest, Logger } from "../types/types";
 
 import { EErrors } from "~/constants/enums/error-enum";
 
 export class Handler {
-  public name: EModule;
-
   protected log: Logger;
 
-  constructor(log: Logger, name: EModule) {
-    this.name = name;
+  constructor(log: Logger) {
     this.log = log;
   }
 
@@ -30,5 +28,9 @@ export class Handler {
       throw new Error(result.error.message);
     }
     return result.data;
+  };
+
+  test = (req: FastifyRequest, reply: FastifyReply) => {
+    return reply.status(200).send(true);
   };
 }

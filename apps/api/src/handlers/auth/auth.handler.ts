@@ -7,13 +7,13 @@ import type { TLoginDto, TRegisterDto } from "./dto/auth.dto";
 import { loginDtoSchema } from "./dto/auth.dto";
 import { registerDtoSchema } from "./dto/auth.dto";
 
-import type { EModule, Logger } from "~/types/types";
+import type { Logger } from "~/types/types";
 
 export class AuthHandlers extends Handler {
   authService: AuthService;
 
-  constructor(log: Logger, authService: AuthService, name: EModule) {
-    super(log, name);
+  constructor(log: Logger, authService: AuthService) {
+    super(log);
 
     this.authService = authService;
   }

@@ -6,13 +6,13 @@ import type { TCreateOrUpdateUserConfig } from "./dto/bot.dto";
 import { createOrUpdateUserConfigDtoSchema } from "./dto/bot.dto";
 
 import type { BotService } from "~/services/bot/bot.service";
-import type { EModule, IAuthenticatedRequest, Logger } from "~/types/types";
+import type { IAuthenticatedRequest, Logger } from "~/types/types";
 
 export class BotHandlers extends Handler {
   botService: BotService;
 
-  constructor(log: Logger, name: EModule, botService: BotService) {
-    super(log, name);
+  constructor(log: Logger, botService: BotService) {
+    super(log);
 
     this.botService = botService;
   }

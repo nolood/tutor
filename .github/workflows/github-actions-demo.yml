@@ -60,22 +60,22 @@ jobs:
 
       - name: Build and test
         run: |
-          if [[ "$CHANGED_FILES" == *"web"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/web"* ]]; then
             echo "Build and test web"
             pnpm test --filter=web 
             pnpm build --filter=web 
           fi
-          if [[ "$CHANGED_FILES" == *"api"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/api"* ]]; then
             echo "Build and test api"
             pnpm test --filter=api 
             pnpm build --filter=api 
           fi
-          if [[ "$CHANGED_FILES" == *"bot"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/bot"* ]]; then
             echo "Build and test bot"
             pnpm test --filter=bot 
             pnpm build --filter=bot 
           fi
-          if [[ "$CHANGED_FILES" == *"orchestrator"* ]]; then
+          if [[ "$CHANGED_FILES" == *"apps/orchestrator"* ]]; then
             echo "Build and test orchestrator"
             pnpm test --filter=orchestrator 
             pnpm build --filter=orchestrator 

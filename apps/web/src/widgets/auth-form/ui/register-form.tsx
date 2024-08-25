@@ -9,7 +9,7 @@ import LinkVariantsForm from "./link-variants-form";
 import { useRegister } from "../hooks/use-register";
 
 const RegisterForm = () => {
-  const {handleSend} = useRegister();
+  const { handleSend } = useRegister();
   const { handleSubmit, Field, state } = useForm({
     defaultValues: {
       name: "",
@@ -22,7 +22,7 @@ const RegisterForm = () => {
       onChange: formRegisterSchema,
     },
     onSubmit: async ({ value }) => {
-      await handleSend({ ...value });
+      await handleSend(value);
     },
   });
 
@@ -106,5 +106,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-
-

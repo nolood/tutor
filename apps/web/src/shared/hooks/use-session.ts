@@ -1,10 +1,10 @@
+import { IUser } from './../types/user-type';
 import { useState } from "react";
-import { IUserType } from "../types/user-type";
 
 export const useSession = () => {
-	const [user, setUser] = useState<IUserType>();
+	const [user, setUser] = useState<IUser>();
 
-	const handleSetUser = (user: IUserType) => {
+	const handleSetUser = (user: IUser) => {
 		setUser(user);
 	}
 	return { user, handleSetUser }

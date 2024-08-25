@@ -6,6 +6,7 @@ import { EErrors } from "~/constants/enums/error-enum";
 import { userTable } from "~/db/schema/user/user.schema";
 import { userConfigTable } from "~/db/schema/user/userConfig.schema";
 import type { TRegisterDto } from "~/handlers/auth/dto/auth.dto";
+import type { TCreateOrUpdateUserConfig } from "~/handlers/bot/dto/bot.dto";
 
 export class UserRepository extends Repository {
   getAll = async () => {
@@ -58,5 +59,30 @@ export class UserRepository extends Repository {
       .where(eq(userTable.id, id));
 
     return user;
+  };
+
+  createOrUpdateUserConfig = async (dto: TCreateOrUpdateUserConfig) => {
+    const data = {
+      tgId: dto.id.toString(),
+      tgUsername: dto.username,
+      tgFirstName: dto?.first_name,
+      tgLastName: dto?.last_name,
+      tgLanguageCode: dto.language_code,
+    };
+
+    const [config] = await this.db
+      .insert(userConfigTable)
+      .values(data)
+      .returning()
+      .onConflictDoUpdate({
+        target: [
+          userConfigTable.tgId,
+          userConfigTable.tgUsername,
+          userConfigTable.tgFirstName,
+        ],
+        set: data,
+      });
+
+    return config;
   };
 }

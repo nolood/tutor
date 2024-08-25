@@ -13,6 +13,11 @@ export class AuthMiddleware extends Middleware {
     reply: FastifyReply,
     done: HookHandlerDoneFunction,
   ) => {
+    if (env.NODE_ENV === "dev" && this.isTest) {
+      done();
+      return;
+    }
+
     const tokenField = req.headers.authorization;
 
     const token = tokenField?.split(" ")[1];

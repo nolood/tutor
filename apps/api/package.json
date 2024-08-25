@@ -10,7 +10,8 @@
     "db:push": "cross-env NODE_ENV=dev drizzle-kit push",
     "db:studio": "cross-env NODE_ENV=dev drizzle-kit studio",
     "db:generate": "cross-env NODE_ENV=dev drizzle-kit generate:pg",
-    "start": "node -r esbuild-register ./src/index.ts"
+    "start": "node -r esbuild-register ./src/index.ts",
+    "test": "cross-env NODE_ENV=dev jest --detectOpenHandles"
   },
   "jest": {
     "preset": "@repo/jest-presets/node"
@@ -51,6 +52,7 @@
     "eslint": "^8.57.0",
     "jest": "^29.7.0",
     "supertest": "^6.3.3",
+    "tap": "^21.0.1",
     "typescript": "^5.3.3"
   }
 }

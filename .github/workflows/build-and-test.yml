@@ -1,0 +1,84 @@
+name: TUTOR ECOSYSTEM CI
+
+on:
+  push:
+    branches:
+      - main
+      - test-ci
+  pull_request:
+    branches:
+      - main
+      - test-ci
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        run: |
+          npm install -g pnpm
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            apps/web/node_modules
+            apps/api/node_modules
+            apps/orchestrator/node_modules
+            apps/bot/node_modules
+            packages/logger/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      
+      - name: Find changed projects
+        id: changes
+        run: |
+          git fetch origin main
+          CHANGED_FILES=$(git diff --name-only HEAD origin/main)
+          echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Debug changed files
+        run: echo "Changed files $CHANGED_FILES"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build and test packages
+        run: |
+          pnpm test --filter='@repo/*'
+          pnpm build --filter='@repo/*'
+
+      - name: Build and test
+        run: |
+          if [[ "$CHANGED_FILES" == *"apps/web"* ]]; then
+            echo "Build and test web"
+            pnpm test --filter=web 
+            pnpm build --filter=web 
+          fi
+          if [[ "$CHANGED_FILES" == *"apps/api"* ]]; then
+            echo "Build and test api"
+            pnpm test --filter=api 
+            pnpm build --filter=api 
+          fi
+          if [[ "$CHANGED_FILES" == *"apps/bot"* ]]; then
+            echo "Build and test bot"
+            pnpm test --filter=bot 
+            pnpm build --filter=bot 
+          fi
+          if [[ "$CHANGED_FILES" == *"apps/orchestrator"* ]]; then
+            echo "Build and test orchestrator"
+            pnpm test --filter=orchestrator 
+            pnpm build --filter=orchestrator 
+          fi
+
+

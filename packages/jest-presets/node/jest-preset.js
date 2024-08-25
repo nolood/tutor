@@ -10,4 +10,7 @@ module.exports = {
     "<rootDir>/dist",
   ],
   preset: "ts-jest",
+  moduleNameMapper: {
+    "^~/(.*)$": "<rootDir>/src/$1", 
+  },
 };

@@ -21,17 +21,15 @@ const TextFieldForm = <T extends Record<string, unknown>>({
   return (
     <Field
       name={name}
-      children={(field) => {
-        return (
-          <Input
-            {...props}
-            name={field.name}
-            onChange={(e) =>
-              field.handleChange(e.target.value as Updater<T, any>)
-            }
-          />
-        );
-      }}
+      children={(field) => (
+        <Input
+          {...props}
+          name={field.name}
+          onChange={(e) =>
+            field.handleChange(e.target.value as Updater<T, any>)
+          }
+        />
+      )}
     />
   );
 };

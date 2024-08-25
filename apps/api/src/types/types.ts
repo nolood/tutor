@@ -3,9 +3,14 @@ import type { FastifyRequest } from "fastify";
 
 export type Logger = typeof logger;
 
+export type TModule = {
+  name: EModule;
+};
+
 export enum EModule {
   AUTH = "auth",
-  USER = "user",
+  BOT = "bot",
+  USER = "users",
 }
 
 export type TTokenPayload = {

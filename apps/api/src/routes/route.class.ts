@@ -24,15 +24,10 @@ export abstract class Route<T extends Handler> implements RouteRegister {
   public prefix: string;
   private middlewares?: Middleware[];
 
-  constructor(
-    handlers: T,
-    prefix: string,
-    name: EModule,
-    middlewares?: Middleware[],
-  ) {
+  constructor(handlers: T, name: EModule, middlewares?: Middleware[]) {
     this.name = name;
     this.handlers = handlers;
-    this.prefix = prefix;
+    this.prefix = "/" + name;
     this.middlewares = middlewares;
   }
 
@@ -50,6 +45,7 @@ export abstract class Route<T extends Handler> implements RouteRegister {
     }
 
     this.defineRoutes(fastify);
+    fastify.get("/test", this.handlers.test);
 
     done();
   }

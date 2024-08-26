@@ -1,6 +1,5 @@
 import "~/app/_styles/globals.css";
 import Provider from "~/app/_components/providers/provider";
-import { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({
   children,

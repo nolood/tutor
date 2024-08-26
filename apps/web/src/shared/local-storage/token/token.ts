@@ -1,15 +1,16 @@
-export class TokenApi {
-  private readonly tokenKey: string = "access-token";
+import { LocalStorage } from "../local-storage";
 
+export class TokenApi extends LocalStorage {
+  private readonly tokenKey: string = "access-token";
   public setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    this.setValue(this.tokenKey, token);
   }
 
   public getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return this.getValue(this.tokenKey);
   }
 
   public removeToken(): void {
-    localStorage.removeItem(this.tokenKey);
+    this.deleteValue(this.tokenKey);
   }
 }

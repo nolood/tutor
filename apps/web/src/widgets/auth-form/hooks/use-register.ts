@@ -16,7 +16,7 @@ export const useRegister = () => {
     onSuccess: (data) => {
       toast.success("Успешная регистрация");
       handleSetUser(data.user);
-      router.push("/");
+      router.push("/main/bot");
     },
     onError(error) {
       toast.error(error.message);

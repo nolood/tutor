@@ -5,7 +5,6 @@ import { formRegisterSchema } from "../model/form-register-schema";
 import { Button } from "@nextui-org/button";
 import { TextFieldForm } from "~/shared/ui/text-field-form";
 import { z } from "zod";
-import LinkVariantsForm from "./link-variants-form";
 import { useRegister } from "../hooks/use-register";
 
 const RegisterForm = () => {
@@ -96,11 +95,6 @@ const RegisterForm = () => {
       >
         Отправить
       </Button>
-      <LinkVariantsForm
-        title={"Есть аккаунт?"}
-        link={"/sign-in"}
-        text={"Войдите"}
-      />
     </form>
   );
 };

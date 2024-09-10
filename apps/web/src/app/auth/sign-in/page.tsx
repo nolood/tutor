@@ -1,9 +1,9 @@
 "use client";
 
-import AuthLayout from "../layout";
+import Layout from "../layout";
 
 const Page = () => {
-  return <AuthLayout>page</AuthLayout>;
+  return <Layout>page</Layout>;
 };
 
 export default Page;

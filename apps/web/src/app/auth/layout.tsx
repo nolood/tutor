@@ -1,13 +1,14 @@
 'use client'
 
 import { ReactNode } from "react";
+import AuthLayout from "./auth-layout";
 
-const AuthLayout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className={"w-full h-[100vh] flex items-center justify-center p-5"}>
+    <AuthLayout >
       {children}
-    </div>
+    </AuthLayout>
   );
 };
 
-export default AuthLayout;
+export default Layout;

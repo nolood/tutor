@@ -1,15 +1,19 @@
-export class TokenApi {
-  private readonly tokenKey: string = "access-token";
+import { z, ZodType } from "zod";
+import { LocalStorage } from "../local-storage";
+import { EStorageKey } from "../types/e-storage-key";
 
-  public setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+class TokenApi<T> extends LocalStorage<T> {
+
+  public setToken(token: T): void {
+    this.setValue(token, EStorageKey.AUTH_TOKEN);
   }
 
-  public getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  public getToken(): T | null {
+    return this.getValue(EStorageKey.AUTH_TOKEN);
   }
 
   public removeToken(): void {
-    localStorage.removeItem(this.tokenKey);
+    this.deleteValue(EStorageKey.AUTH_TOKEN);
   }
 }
+export const tokenApi = <T extends ZodType>(schema: z.infer<T>) => new TokenApi(schema)

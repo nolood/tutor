@@ -1,13 +1,13 @@
 import { Api } from "~/shared/api/api";
-import { TokenApi } from "~/shared/local-storage/token/token";
 import { IDataRegister, IRegisterFields } from "~/widgets/auth-form/types/auth-types";
+import { authSchema } from "./model/auth-schema";
+import { tokenApi } from "~/shared/local-storage/token/token";
 
 export class AuthApi extends Api {
-  private tokenApi: TokenApi;
 
   constructor() {
     super();
-    this.tokenApi = new TokenApi();
+    this.tokenApi = tokenApi(authSchema)
   }
 
   public async signIn(params: IRegisterFields): Promise<IDataRegister> {

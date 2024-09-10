@@ -1,4 +1,9 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
 import { env } from "~/env";
 import { ZodSchema, ZodError } from "zod";
 
@@ -9,24 +14,58 @@ export class Api {
     this.api = axios.create({ baseURL: env.API_URL });
   }
 
-  protected async get<T>(url: string, schema: ZodSchema<T>, config?: AxiosRequestConfig): Promise<T> {
-    const data = await this.request<T>({ method: 'GET', url, ...config });
+  protected async get<T>(
+    url: string,
+    schema: ZodSchema<T>,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
+    const data = await this.request<T>({ method: "GET", url, ...config });
     return this.validateResponse(schema, data);
   }
 
-  protected async post<T, D = unknown>(url: string, data: D, schema: ZodSchema<T>, config?: AxiosRequestConfig<D>): Promise<T> {
-    this.validateRequest(schema, data);
-    const responseData = await this.request<T>({ method: 'POST', url, data, ...config });
-    return this.validateResponse(schema, responseData);
+  protected async post<T, D = unknown>(
+    url: string,
+    data: D,
+    requestSchema: ZodSchema<D>, 
+    responseSchema: ZodSchema<T>,
+    config?: AxiosRequestConfig<D>
+  ): Promise<T> {
+    this.validateRequest(requestSchema, data);
+
+    const responseData = await this.request<T>({
+      method: "POST",
+      url,
+      data,
+      ...config,
+    });
+
+    return this.validateResponse(responseSchema, responseData);
   }
 
-  protected async put<T, D = unknown>(url: string, data: D, schema: ZodSchema<T>, config?: AxiosRequestConfig<D>): Promise<T> {
-    this.validateRequest(schema, data);
-    const responseData = await this.request<T>({ method: 'PUT', url, data, ...config });
-    return this.validateResponse(schema, responseData);
+  protected async put<T, D = unknown>(
+    url: string,
+    data: D,
+    requestSchema: ZodSchema<D>,
+    responseSchema: ZodSchema<T>, 
+    config?: AxiosRequestConfig<D>
+  ): Promise<T> {
+    this.validateRequest(requestSchema, data);
+
+    const responseData = await this.request<T>({
+      method: "PUT",
+      url,
+      data,
+      ...config,
+    });
+
+    return this.validateResponse(responseSchema, responseData);
   }
-  protected async delete<T>(url: string, schema: ZodSchema<T>, config?: AxiosRequestConfig): Promise<T> {
-    const data = await this.request<T>({ method: 'DELETE', url, ...config });
+  protected async delete<T>(
+    url: string,
+    schema: ZodSchema<T>,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
+    const data = await this.request<T>({ method: "DELETE", url, ...config });
     return this.validateResponse(schema, data);
   }
 
@@ -71,7 +110,7 @@ export class Api {
   }
 
   public setToken(token: string): void {
-    this.api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    this.api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     this.api.interceptors.request.use((config) => config);
     this.api.interceptors.response.use((response) => response);
   }

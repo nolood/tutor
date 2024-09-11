@@ -10,7 +10,9 @@ import {
 } from "./model/auth-schema";
 import { tokenApi } from "~/shared/local-storage/token/token";
 export interface IAuthApi {
+  // eslint-disable-next-line no-unused-vars
   signIn(params: IRegisterFields): Promise<IDataRegister>;
+  // eslint-disable-next-line no-unused-vars
   setToken(token: string): void;
 }
 export class AuthApi extends Api implements IAuthApi {

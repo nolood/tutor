@@ -1,3 +1,3 @@
 export enum EStorageKey {
-	AUTH_TOKEN = 'access-token'
+  AUTH_TOKEN = "access-token",
 }

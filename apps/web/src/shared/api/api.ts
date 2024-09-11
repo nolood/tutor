@@ -11,7 +11,7 @@ export class Api {
   private api: AxiosInstance;
 
   constructor() {
-    this.api = axios.create({ baseURL: env.API_URL });
+    this.api = axios.create({ baseURL: env?.API_URL });
   }
 
   protected async get<T>(
@@ -26,7 +26,7 @@ export class Api {
   protected async post<T, D = unknown>(
     url: string,
     data: D,
-    requestSchema: ZodSchema<D>, 
+    requestSchema: ZodSchema<D>,
     responseSchema: ZodSchema<T>,
     config?: AxiosRequestConfig<D>
   ): Promise<T> {
@@ -46,7 +46,7 @@ export class Api {
     url: string,
     data: D,
     requestSchema: ZodSchema<D>,
-    responseSchema: ZodSchema<T>, 
+    responseSchema: ZodSchema<T>,
     config?: AxiosRequestConfig<D>
   ): Promise<T> {
     this.validateRequest(requestSchema, data);

@@ -9,7 +9,7 @@ type LinkVariantsFormProps = {
 
 const LinkVariantsForm = ({ title, link, text }: LinkVariantsFormProps) => {
   return (
-    <>
+    <div className={"w-1/2"}>
       <Divider className="my-4" />
       <div className={"flex align-items-center justify-end w-full gap-4"}>
         <span className={"text-lg text-fuchsia-100"}>{title}</span>
@@ -17,7 +17,7 @@ const LinkVariantsForm = ({ title, link, text }: LinkVariantsFormProps) => {
           {text}
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

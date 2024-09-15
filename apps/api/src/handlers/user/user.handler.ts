@@ -25,7 +25,6 @@ export class UserHandlers extends Handler {
 
   getSelf = async (req: IAuthenticatedRequest, reply: FastifyReply) => {
     const userId = this.getUserId(req);
-
     const user = await this.userService.getSelf(userId);
 
     reply.status(200).send(user);

@@ -22,19 +22,19 @@ export class AuthService extends Service {
     const { email, password, name } = userData;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await this.userRepository.create({
+    const { user, userConfig } = await this.userRepository.create({
       email,
       password: hashedPassword,
       name,
     });
-
-    if (!user.email) {
+    console.log(user);
+    if (!userConfig.email) {
       return;
     }
 
-    const token = this.createToken(user.id, user.email, user.name);
+    const token = this.createToken(user.id, userConfig.email, user.name);
 
-    return { token, user };
+    return { token, user, userConfig };
   };
 
   login = async (userData: TLoginDto) => {

@@ -57,7 +57,9 @@ export class Server {
         new AuthMiddleware(this.isTest),
       ]),
       new AuthRoutes(handlers[EModule.AUTH], EModule.AUTH),
-      new BotRoutes(handlers[EModule.BOT], EModule.BOT),
+      new BotRoutes(handlers[EModule.BOT], EModule.BOT, [
+        new AuthMiddleware(this.isTest),
+      ]),
     ];
 
     for (const route of routes) {

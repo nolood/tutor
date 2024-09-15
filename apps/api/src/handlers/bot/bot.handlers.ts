@@ -19,15 +19,20 @@ export class BotHandlers extends Handler {
 
   createOrUpdateUserConfig = async (
     req: IAuthenticatedRequest,
-    reply: FastifyReply,
+    reply: FastifyReply
   ) => {
     const body = this.validate<TCreateOrUpdateUserConfig>(
       createOrUpdateUserConfigDtoSchema,
-      req.body,
+      req.body
     );
-
-    const data = await this.botService.createOrUpdateUserConfig(body);
+    const userId = this.getUserId(req);
+    const data = await this.botService.createOrUpdateUserConfig(body, userId);
 
     reply.status(200).send(data);
+  };
+  getUpdateBot = async (req: IAuthenticatedRequest, reply: FastifyReply) => {
+    const userId = this.getUserId(req);
+    const bot = await this.botService.getUpdatedBot(userId);
+    reply.status(200).send(bot);
   };
 }

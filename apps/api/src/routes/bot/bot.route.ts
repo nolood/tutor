@@ -7,5 +7,6 @@ import type { BotHandlers } from "~/handlers/bot/bot.handlers";
 export class BotRoutes extends Route<BotHandlers> {
   public defineRoutes = (fastify: FastifyInstance) => {
     fastify.post("/config", this.handlers.createOrUpdateUserConfig);
+    fastify.get("/get", this.handlers.getUpdateBot);
   };
 }

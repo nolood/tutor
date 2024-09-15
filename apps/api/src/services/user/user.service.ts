@@ -16,7 +16,6 @@ export class UserService extends Service {
   };
   getSelf = async (id: string) => {
     const user = await this.userRepository.findById(id);
-
     if (!user) {
       throw new Error(EErrors.USER_NOT_FOUND);
     }

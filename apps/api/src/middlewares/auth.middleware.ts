@@ -6,16 +6,10 @@ import { Middleware } from "./middleware.class";
 import { EErrors } from "~/constants/enums/error-enum";
 import { env } from "~/env";
 import type { IAuthenticatedRequest, TTokenPayload } from "~/types/types";
-import { log } from "console";
 
 export class AuthMiddleware extends Middleware {
-  onRequest = (
-    req: IAuthenticatedRequest,
-    reply: FastifyReply,
-    done: HookHandlerDoneFunction
-  ) => {
+  onRequest = async (req: IAuthenticatedRequest, reply: FastifyReply) => {
     if (env.NODE_ENV === "dev" && this.isTest) {
-      done();
       return;
     }
 
@@ -27,15 +21,40 @@ export class AuthMiddleware extends Middleware {
       return;
     }
 
-    const decoded = jwt.verify(token, env.SECRET_KEY) as TTokenPayload | null;
-    if (!decoded) {
-      reply.status(401).send({ message: EErrors.AUTH_ERR });
-      return;
-    }
-    console.log(req, "req");
-    console.log(decoded, "req");
-    req.userId = decoded.id;
+    try {
+      const decoded = jwt.verify(token, env.SECRET_KEY) as TTokenPayload;
+      req.userId = decoded.id;
+    } catch (err) {
+      if (err instanceof jwt.TokenExpiredError) {
+        const refreshToken = req.headers["x-refresh-token"] as string;
+        if (!refreshToken) {
+          reply.status(401).send({ message: EErrors.REFRESH_TOKEN_REQUIRED });
+          return;
+        }
 
-    done();
+        try {
+          const refreshDecoded = jwt.verify(
+            refreshToken,
+            env.REFRESH_SECRET_KEY
+          ) as TTokenPayload;
+
+          const newAccessToken = jwt.sign(
+            { id: refreshDecoded.id },
+            env.SECRET_KEY,
+            {
+              expiresIn: "15m",
+            }
+          );
+
+          reply.header("x-access-token", newAccessToken);
+
+          req.userId = refreshDecoded.id;
+        } catch (refreshErr) {
+          reply.status(401).send({ message: EErrors.INVALID_REFRESH_TOKEN });
+        }
+      } else {
+        reply.status(401).send({ message: EErrors.AUTH_ERR });
+      }
+    }
   };
 }

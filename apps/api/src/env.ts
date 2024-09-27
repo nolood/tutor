@@ -6,6 +6,7 @@ export const EnvSchema = z.object({
   PORT: z.string().transform(Number),
   DATABASE_URL: z.string(),
   SECRET_KEY: z.string(),
+  REFRESH_SECRET_KEY: z.string(),
 });
 
 config();
@@ -15,6 +16,7 @@ const envObj = {
   PORT: process.env.PORT,
   DATABASE_URL: process.env.DATABASE_URL,
   SECRET_KEY: process.env.SECRET_KEY,
+  REFRESH_SECRET_KEY: process.env.REFRESH_SECRET_KEY,
 };
 
 let _env;

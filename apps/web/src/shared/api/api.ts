@@ -109,8 +109,9 @@ export class Api {
     }
   }
 
-  public setToken(token: string): void {
-    this.api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  public setToken(accessToken: string, refreshToken: string): void {
+    this.api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    this.api.defaults.headers.common["x-refresh-token"] = refreshToken;
     this.api.interceptors.request.use((config) => config);
     this.api.interceptors.response.use((response) => response);
   }

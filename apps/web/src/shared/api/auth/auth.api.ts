@@ -11,7 +11,7 @@ import {
 import { tokenApi } from "~/shared/local-storage/token/token";
 export interface IAuthApi {
   signIn(params: IRegisterFields): Promise<IDataRegister>;
-  setToken(token: string): void;
+  setToken(accessToken: string, refreshToken: string): void;
 }
 export class AuthApi extends Api implements IAuthApi {
   private static instance: AuthApi;
@@ -37,8 +37,8 @@ export class AuthApi extends Api implements IAuthApi {
         requestSchemaSignIn,
         responseSchemaSignIn
       );
-      this.setToken(data.token);
-      this.tokenApi.setToken(data.token);
+      this.setToken(data.accessToken, data.refreshToken);
+      this.tokenApi.setToken(data.accessToken);
       return data;
     } catch (error) {
       console.error(error);

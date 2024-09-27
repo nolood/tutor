@@ -144,6 +144,6 @@ export class UserRepository extends Repository {
     const clusterBot = await this.db.query.cluster.findFirst({
       where: eq(clusterTable.id, bot?.clusterId),
     });
-    return { clusterBot };
+    return { clusterBot, bot };
   };
 }

@@ -6,4 +6,6 @@ export enum EErrors {
   USER_NOT_FOUND = "err-user-not-found",
   USER_ID_NOT_FOUND = "err-user_id-required",
   BOT_NOT_FOUND = "err-bot-not-found",
+  INVALID_REFRESH_TOKEN = "INVALID_REFRESH_TOKEN",
+  REFRESH_TOKEN_REQUIRED = "REFRESH_TOKEN_REQUIRED",
 }

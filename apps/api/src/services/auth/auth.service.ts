@@ -32,9 +32,19 @@ export class AuthService extends Service {
       return;
     }
 
-    const token = this.createToken(user.id, userConfig.email, user.name);
+    const accessToken = this.createAccessToken(
+      user.id,
+      userConfig.email,
+      user.name
+    );
 
-    return { token, user, userConfig };
+    const refreshToken = this.createRefreshToken(
+      user.id,
+      userConfig.email,
+      user.name
+    );
+
+    return { accessToken, user, refreshToken, userConfig };
   };
 
   login = async (userData: TLoginDto) => {
@@ -52,16 +62,27 @@ export class AuthService extends Service {
       throw new Error(EErrors.LOG_ERR_PASS);
     }
 
-    const token = this.createToken(user.id, user.email, user.name);
-
-    return { token, user };
+    const accessToken = this.createAccessToken(user.id, user.email, user.name);
+    const refreshToken = this.createRefreshToken(
+      user.id,
+      user.email,
+      user.name
+    );
+    return { accessToken, refreshToken, user };
   };
 
-  createToken = (id: string, email: string, name: string) => {
+  createAccessToken = (id: string, email: string, name: string) => {
     const token = jwt.sign({ id: id, email, name }, env.SECRET_KEY, {
       expiresIn: "1h",
     });
 
+    return token;
+  };
+
+  createRefreshToken = (id: string, email: string, name: string) => {
+    const token = jwt.sign({ id, email, name }, env.REFRESH_SECRET_KEY, {
+      expiresIn: "7d",
+    });
     return token;
   };
 }

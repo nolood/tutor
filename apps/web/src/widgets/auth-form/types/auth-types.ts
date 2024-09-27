@@ -6,10 +6,13 @@ export interface IRegisterFields {
 export interface IDataRegister {
   user: {
     id: string;
+    name: string;
+  };
+  userConfig: {
     userId: string;
     email: string;
     password: string;
-    name: string;
   };
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 }

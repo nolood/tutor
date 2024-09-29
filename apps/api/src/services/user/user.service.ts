@@ -16,10 +16,11 @@ export class UserService extends Service {
   };
   getSelf = async (id: string) => {
     const user = await this.userRepository.findById(id);
+    const userConfig = await this.userRepository.findUserConfig(id);
     if (!user) {
       throw new Error(EErrors.USER_NOT_FOUND);
     }
 
-    return user;
+    return { user, userConfig };
   };
 }

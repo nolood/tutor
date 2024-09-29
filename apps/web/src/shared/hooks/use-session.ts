@@ -3,12 +3,13 @@ import { IUser } from "./../types/user-type";
 import { useEffect, useState } from "react";
 import { UserApi } from "../api/user/user.api";
 import { useRouter } from "next/navigation";
+import { IUserData } from "../api/user/model/user-type";
 
 export const useSession = () => {
-  const [user, setUser] = useState<IUser>();
+  const [user, setUser] = useState<IUserData>();
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const router = useRouter();
-  const handleSetUser = (user: IUser) => {
+  const handleSetUser = (user: IUserData) => {
     setUser(user);
     setIsAuth(true);
   };

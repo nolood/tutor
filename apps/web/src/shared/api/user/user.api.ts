@@ -1,6 +1,6 @@
 import { TokenApi, tokenApi } from "~/shared/local-storage/token/token";
 import { Api } from "../api";
-import { userSchema } from "./model/user-schema";
+import { userDataSchema } from "./model/user-schema";
 import { IUserData } from "./model/user-type";
 import { authSchema } from "../auth/model/auth-schema";
 
@@ -23,7 +23,7 @@ export class UserApi extends Api implements IUserApi {
   }
   public async getSelf(): Promise<IUserData> {
     try {
-      const data = await this.get<IUserData>("users/self", userSchema);
+      const data = await this.get<IUserData>("users/self", userDataSchema);
       return data;
     } catch (error) {
       console.error(error);

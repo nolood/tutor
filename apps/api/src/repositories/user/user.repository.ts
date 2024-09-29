@@ -63,7 +63,13 @@ export class UserRepository extends Repository {
       .where(eq(userTable.id, id));
     return user;
   };
-
+  findUserConfig = async (id: string) => {
+    const [userConfig] = await this.db
+      .select()
+      .from(userConfigTable)
+      .where(eq(userConfigTable.userId, id));
+    return userConfig;
+  };
   createOrUpdateUserConfig = async (
     dto: TCreateOrUpdateUserConfig,
     userId: string

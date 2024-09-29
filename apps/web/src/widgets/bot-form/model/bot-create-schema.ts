@@ -3,7 +3,7 @@ import { z } from "zod";
 export const botCreateSchema = z.object({
   callbacks: z.object({
     key: z.object({
-      keyBoard: z.array(
+      keyboard: z.array(
         z.array(
           z.object({
             callback: z.string(),
@@ -11,7 +11,7 @@ export const botCreateSchema = z.object({
           })
         )
       ),
-      message: z.string(),
+      message: z.string().min(1, "Message cannot be empty"),
     }),
   }),
 });

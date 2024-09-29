@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { userConfigSchema, userSchema } from "../../auth/model/auth-schema";
 
-export const userSchema = z.object({
-  name: z.string(),
-  id: z.string(),
+export const userDataSchema = z.object({
+  user: userSchema,
+  userConfig: userConfigSchema
 });

@@ -8,15 +8,13 @@ import {
   requestSchemaSignIn,
   responseSchemaSignIn,
 } from "./model/auth-schema";
-import { tokenApi } from "~/shared/local-storage/token/token";
+import { TokenApi, tokenApi } from "~/shared/local-storage/token/token";
 export interface IAuthApi {
   signIn(params: IRegisterFields): Promise<IDataRegister>;
-  setToken(accessToken: string, refreshToken: string): void;
 }
 export class AuthApi extends Api implements IAuthApi {
   private static instance: AuthApi;
-  tokenApi: any;
-
+  tokenApi: TokenApi<string>;
   private constructor() {
     super();
     this.tokenApi = tokenApi(authSchema);
@@ -37,8 +35,7 @@ export class AuthApi extends Api implements IAuthApi {
         requestSchemaSignIn,
         responseSchemaSignIn
       );
-      this.setToken(data.accessToken, data.refreshToken);
-      this.tokenApi.setToken(data.accessToken);
+      this.tokenApi.setToken(data.accessToken, data.refreshToken);
       return data;
     } catch (error) {
       console.error(error);

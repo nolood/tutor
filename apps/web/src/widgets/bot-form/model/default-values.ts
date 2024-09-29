@@ -1,8 +1,8 @@
 export const DEFAULT_VALUES = {
   callbacks: {
     key: {
-      keyboard: [[{ callback: "", text: "" }]],
-      message: "",
+      keyboard: [[{ callback: "start", text: "Старт" }]],
+      message: "Начать",
     },
   },
 };

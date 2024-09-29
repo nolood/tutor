@@ -1,11 +1,12 @@
 import { config } from "dotenv";
 import { z } from "zod";
-config();
 
 export const EnvSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]),
   API_URL: z.string(),
 });
+
+config();
 
 const envObj = {
   NODE_ENV: process.env.NODE_ENV,
@@ -23,8 +24,8 @@ try {
     } else {
       console.error("Unknown error:", error);
     }
-    process.exit(1);
   }
+  process.exit(1);
 }
 
 export const env = _env;
